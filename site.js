@@ -12,14 +12,14 @@
       "switchDark": "切换到深色外观",
       "switchLight": "切换到浅色外观",
       "introLabel": "个人简介",
-      "toolsLabel": "小工具",
+      "toolsLabel": "定制化开源工具",
       "greeting": "Hi，我是 yjcdon",
       "employment": "目前就职于制造业龙头企业",
       "background": "Java 后端出身，向产品+AI 全栈转型",
       "contactLabel": "联系方式：",
-      "toolsHeading": "小工具。",
-      "toolsSubheading": "各有一点用。",
-      "toolsIntroduction": "为日常的小麻烦而做。找到适合你的那一个。",
+      "toolsHeading": "定制化开源工具。",
+      "toolsSubheading": "为实际需求而改进。",
+      "toolsIntroduction": "围绕实际需求，定制和改进开源工具。",
       "ferryTagline": "两个网盘，一个传输窗口。",
       "ferryDescription": "在 Mac 上上传、下载百度和夸克网盘文件。管理传输任务，也核对文件内容是否一致。",
       "ferryFeature1": "双网盘上传与下载",
@@ -67,7 +67,13 @@
       "ferryImageLabel": "查看 Ferry Plus 界面原图",
       "ferryImageAlt": "Ferry Plus 主窗口：左侧为任务状态，顶部切换上传与下载。",
       "markmapImageLabel": "查看 Markmap Plus 界面原图",
-      "markmapImageAlt": "Typora 左侧嵌入思维导图，右侧显示文档正文。"
+      "markmapImageAlt": "Typora 左侧嵌入思维导图，右侧显示文档正文。",
+      "toolGallery": "定制化开源工具轮播",
+      "toolNavigation": "切换工具",
+      "previousTool": "上一个工具",
+      "nextTool": "下一个工具",
+      "showTool": "查看 {name}",
+      "toolStatus": "正在展示：{name}，第 {current} 个，共 {total} 个。"
     },
     "en": {
       "pageTitle": "yjcdon · Personal Website",
@@ -80,14 +86,14 @@
       "switchDark": "Switch to dark appearance",
       "switchLight": "Switch to light appearance",
       "introLabel": "About me",
-      "toolsLabel": "Tools",
+      "toolsLabel": "Custom open-source",
       "greeting": "Hi, I'm yjcdon",
       "employment": "Currently at a leading manufacturing company",
       "background": "From Java backend development to product + AI-powered full-stack development",
       "contactLabel": "Contact: ",
-      "toolsHeading": "Small tools.",
-      "toolsSubheading": "A little help, every day.",
-      "toolsIntroduction": "Made for everyday needs. Find the one that works for you.",
+      "toolsHeading": "Customized open-source tools.",
+      "toolsSubheading": "Adapted to real needs.",
+      "toolsIntroduction": "Open-source tools customized and improved for real-world needs.",
       "ferryTagline": "Two cloud drives. One transfer window.",
       "ferryDescription": "Upload and download files from Baidu and Quark on your Mac. Manage transfers and verify file integrity.",
       "ferryFeature1": "Baidu & Quark transfers",
@@ -135,7 +141,13 @@
       "ferryImageLabel": "View the full Ferry Plus screenshot",
       "ferryImageAlt": "Ferry Plus window with task states on the left and upload and download tabs at the top.",
       "markmapImageLabel": "View the full Markmap Plus screenshot",
-      "markmapImageAlt": "Typora with an embedded mind map on the left and document content on the right."
+      "markmapImageAlt": "Typora with an embedded mind map on the left and document content on the right.",
+      "toolGallery": "Customized open-source tool carousel",
+      "toolNavigation": "Choose a tool",
+      "previousTool": "Previous tool",
+      "nextTool": "Next tool",
+      "showTool": "View {name}",
+      "toolStatus": "Showing {name}, tool {current} of {total}."
     }
   };
 
@@ -145,6 +157,7 @@
     ?? (navigator.language.toLowerCase().startsWith("zh") ? "zh" : "en");
   let themeChoice = readChoice("theme", ["light", "dark"]);
   let theme = themeChoice ?? (systemAppearance.matches ? "dark" : "light");
+  let activeTool = 0;
 
   /**
    * Read optional display preferences; restricted storage uses browser defaults.
@@ -213,10 +226,68 @@
     themeToggle.setAttribute("aria-label", themeLabel);
     themeToggle.setAttribute("aria-pressed", String(theme === "dark"));
     themeToggle.title = themeLabel;
+    renderCarouselControls();
+  }
+
+  /** Keep tool navigation, translated announcements and offscreen focus in sync. */
+  function renderCarouselControls() {
+    const slides = [...document.querySelectorAll("#tool-track > article")];
+    const dots = [...document.querySelectorAll(".carousel-dot")];
+    slides.forEach((slide, index) => {
+      slide.inert = index !== activeTool;
+      slide.setAttribute("aria-hidden", String(index !== activeTool));
+      const name = slide.querySelector("h3").textContent;
+      dots[index].setAttribute("aria-label", translate("showTool").replace("{name}", name));
+      dots[index].setAttribute("aria-current", String(index === activeTool));
+    });
+    document.getElementById("tool-prev").disabled = activeTool === 0;
+    document.getElementById("tool-next").disabled = activeTool === slides.length - 1;
+    document.getElementById("tool-position").textContent = (activeTool + 1) + " / " + slides.length;
+    document.getElementById("tool-status").textContent = translate("toolStatus")
+      .replace("{name}", slides[activeTool].querySelector("h3").textContent)
+      .replace("{current}", String(activeTool + 1))
+      .replace("{total}", String(slides.length));
+  }
+
+  /** Enable native swipe navigation plus bounded buttons, dots and keyboard controls. */
+  function initializeCarousel() {
+    const track = document.getElementById("tool-track");
+    const slides = [...track.querySelectorAll(":scope > article")];
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+    /** Scroll to a tool within the available range, respecting motion preferences. */
+    function showTool(index) {
+      activeTool = Math.max(0, Math.min(index, slides.length - 1));
+      track.scrollTo({ left: slides[activeTool].offsetLeft, behavior: reducedMotion.matches ? "instant" : "smooth" });
+      renderCarouselControls();
+    }
+
+    document.getElementById("tool-prev").addEventListener("click", () => showTool(activeTool - 1));
+    document.getElementById("tool-next").addEventListener("click", () => showTool(activeTool + 1));
+    document.querySelectorAll(".carousel-dot").forEach((dot, index) => {
+      dot.addEventListener("click", () => showTool(index));
+    });
+    track.addEventListener("keydown", (event) => {
+      if (event.target !== track) return;
+      const targets = { ArrowLeft: activeTool - 1, ArrowRight: activeTool + 1, Home: 0, End: slides.length - 1 };
+      if (!(event.key in targets)) return;
+      event.preventDefault();
+      showTool(targets[event.key]);
+    });
+
+    const observer = new IntersectionObserver((entries) => {
+      const visible = entries.find((entry) => entry.isIntersecting && entry.intersectionRatio >= 0.6);
+      if (!visible) return;
+      activeTool = slides.indexOf(visible.target);
+      renderCarouselControls();
+    }, { root: track, threshold: 0.6 });
+    slides.forEach((slide) => observer.observe(slide));
+    document.querySelector(".carousel-controls").hidden = false;
   }
 
   /** Bind language and appearance controls once the static page is ready. */
   function initialize() {
+    initializeCarousel();
     renderLanguage();
     document.querySelector(".preferences").hidden = false;
     document.getElementById("language-toggle").addEventListener("click", () => {
