@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="theme-color" content="#f6f5f1">
+    <meta name="theme-color" content="#ffffff">
     <meta name="description" content="我是 yjcdon，主要使用 Java 和 React。这里分享我的个人简介，以及围绕日常需要开发和改进的小工具。">
     <meta property="og:title" content="yjcdon · 个人简介与小工具">
     <meta property="og:description" content="写代码，也做一些让日常更顺手的小工具。">
@@ -11,49 +11,47 @@
     <meta property="og:url" content="https://yjcdon.github.io/">
     <title>yjcdon · 个人简介与小工具</title>
     <link rel="canonical" href="https://yjcdon.github.io/">
-    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="assets/favicon.svg?v=apple-1" type="image/svg+xml">
+    <link rel="stylesheet" href="styles.css?v=apple-1">
   </head>
   <body>
     <a class="skip-link" href="#main">跳到正文</a>
+    <div class="header-shell">
     <header class="site-header wrap">
-      <a class="wordmark" href="#intro" aria-label="yjcdon，返回个人简介">yjcdon<span aria-hidden="true">.</span></a>
+      <a class="wordmark" href="#intro" aria-label="yjcdon，返回个人简介">yjcdon.</a>
       <nav aria-label="主导航">
         <a href="#intro">个人简介</a>
         <a href="#tools">小工具</a>
         <a class="github-link" href="https://github.com/yjcdon">GitHub <span aria-hidden="true">↗</span></a>
       </nav>
     </header>
+    </div>
 
-    <main id="main" class="wrap">
-      <section id="intro" class="intro" aria-labelledby="intro-title">
+    <main id="main">
+      <section id="intro" class="intro wrap" aria-labelledby="intro-title">
         <div class="intro-copy">
-          <p class="eyebrow"><span class="dot" aria-hidden="true"></span> 个人简介</p>
-          <h1 id="intro-title">你好，我是 <span>yjcdon。</span></h1>
-          <p class="intro-lead">写代码，也做一些让日常更顺手的小工具。</p>
+          <p class="eyebrow">个人简介</p>
+          <h1 id="intro-title"><span class="greeting">你好，我是</span><span class="name">yjcdon.</span></h1>
+          <p class="intro-lead">写代码。<br class="mobile-break">也让日常，顺手一点。</p>
           <p class="intro-body">主要使用 Java 和 React，从需求梳理到开发、测试和运维，习惯自己动手。遇到不顺手的地方，也会开发或改进一些小工具，分享在这里。</p>
           <div class="intro-actions">
-            <a class="button primary" href="#tools">看看小工具 <span aria-hidden="true">↓</span></a>
-            <a class="text-link" href="https://github.com/yjcdon">在 GitHub 找到我 <span aria-hidden="true">↗</span></a>
+            <a class="button primary" href="#tools">探索小工具</a>
+            <a class="text-link" href="https://github.com/yjcdon">我的 GitHub <span aria-hidden="true">↗</span></a>
           </div>
-        </div>
-        <div class="intro-note" aria-hidden="true">
-          <div class="note-top"><span>日常 · 代码 · 小工具</span><span>✳</span></div>
-          <div class="monogram">y<span>.</span></div>
-          <div class="note-bottom"><span>从一个小问题开始。</span><span>Java / React</span></div>
         </div>
       </section>
 
       <section id="tools" class="tools" aria-labelledby="tools-title">
+        <div class="wrap">
         <div class="section-heading">
-          <div><p class="eyebrow">MADE FOR EVERYDAY</p><h2 id="tools-title">小工具<span class="count">05</span></h2></div>
-          <p>用来处理日常的小麻烦，<br class="desktop-break">也希望刚好能帮到你。</p>
+          <h2 id="tools-title">小工具。<span>各有一点用。</span></h2>
+          <p>为日常的小麻烦而做。<br class="mobile-break">找到适合你的那一个。</p>
         </div>
 
         <div class="tool-grid">
           <article class="tool-card featured" aria-labelledby="ferry-title">
             <div class="featured-copy">
-              <div class="card-top"><span class="tool-icon violet" aria-hidden="true">⇅</span><span class="platform">macOS · Apple Silicon</span></div>
+              <div class="card-top"><span class="tool-icon violet" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none"><path d="M10 5v22m-6-6 6 6 6-6M22 27V5m-6 6 6-6 6 6"/></svg></span><span class="platform">macOS · Apple Silicon</span></div>
               <h3 id="ferry-title">Ferry Plus</h3>
               <p class="tool-tagline">两个网盘，一个传输窗口。</p>
               <p class="tool-description">在 Mac 上上传、下载百度和夸克网盘文件。管理传输任务，也核对文件内容是否一致。</p>
@@ -106,8 +104,9 @@
           </article>
         </div>
         <p class="tools-note">安装要求、使用说明和更新记录见各工具的 GitHub 页面。遇到问题，欢迎在对应仓库提交 Issue。</p>
+        </div>
       </section>
     </main>
-    <footer class="site-footer wrap"><span>yjcdon<span class="footer-dot">.</span></span><p>做一点，改一点。</p><a href="https://github.com/yjcdon">GitHub <span aria-hidden="true">↗</span></a></footer>
+    <footer class="site-footer wrap"><span>yjcdon.</span><p>做一点，改一点。</p><a href="https://github.com/yjcdon">GitHub <span aria-hidden="true">↗</span></a></footer>
   </body>
 </html>
