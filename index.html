@@ -12,7 +12,7 @@
     <title data-i18n="pageTitle">yjcdon · 个人主页</title>
     <link rel="canonical" href="https://yjcdon.github.io/">
     <link rel="icon" href="assets/favicon.svg?v=profile-2" type="image/svg+xml">
-    <script src="site.js?v=tools-carousel-1"></script>
+    <script src="site.js?v=tools-autoplay-1"></script>
     <link rel="stylesheet" href="styles.css?v=tools-carousel-1">
   </head>
   <body>
@@ -55,6 +55,7 @@
           <p><span data-i18n="toolsIntroduction">围绕实际需求，定制和改进开源工具。</span></p>
         </div>
 
+        <div id="tool-carousel" class="tool-carousel">
         <div id="tool-track" class="tool-track" role="region" data-i18n-aria-label="toolGallery" aria-label="定制化开源工具轮播" tabindex="0">
           <article class="tool-card featured" aria-labelledby="ferry-title">
             <div class="featured-copy">
@@ -76,7 +77,6 @@
             <p class="tool-description"><span data-i18n="macrightDescription">在当前文件夹新建文件、复制完整路径，或打开你常用的终端。几个小操作，少绕一点路。</span></p>
             <ul class="features"><li><span data-i18n="macrightFeature1">新建五种文件</span></li><li><span data-i18n="macrightFeature2">多选复制路径</span></li><li><span data-i18n="macrightFeature3">自选终端</span></li></ul>
             <div class="card-links"><a class="button small" href="https://github.com/yjcdon/MacRight/releases/latest" target="_blank" rel="noopener noreferrer"><span data-i18n="download">下载工具</span> <span aria-hidden="true">↗</span></a><a class="text-link" href="https://github.com/yjcdon/MacRight" target="_blank" rel="noopener noreferrer"><span data-i18n="sourceAndGuide">源码与说明</span> <span aria-hidden="true">↗</span></a></div>
-            <p class="credit"><span data-i18n="macrightCreditBefore">参考并复用 </span><a href="https://github.com/GarfieldFluffJr/MacNewFile" target="_blank" rel="noopener noreferrer">MacNewFile</a><span data-i18n="macrightCreditAfter"> 的部分资源。</span></p>
           </article>
 
           <article class="tool-card" aria-labelledby="connect-title">
@@ -107,7 +107,6 @@
             <p class="tool-description"><span data-i18n="speakerDescription">在托盘中运行，向选定音箱持续发送静音数据，尝试避免闲置自动关机。断线后等待重连，不改变系统音量。</span></p>
             <ul class="features"><li><span data-i18n="speakerFeature1">指定音箱</span></li><li><span data-i18n="speakerFeature2">托盘运行</span></li><li><span data-i18n="speakerFeature3">开机自启</span></li></ul>
             <div class="card-links"><a class="button small" href="https://github.com/yjcdon/speaker-keep-alive/releases/latest" target="_blank" rel="noopener noreferrer"><span data-i18n="download">下载工具</span> <span aria-hidden="true">↗</span></a><a class="text-link" href="https://github.com/yjcdon/speaker-keep-alive" target="_blank" rel="noopener noreferrer"><span data-i18n="sourceAndGuide">源码与说明</span> <span aria-hidden="true">↗</span></a></div>
-            <p class="credit"><span data-i18n="speakerCredit">保活效果取决于音箱固件，需在自己的设备上验证。</span></p>
           </article>
         </div>
         <div class="carousel-controls" hidden>
@@ -122,6 +121,7 @@
           <button id="tool-next" class="carousel-arrow" type="button" aria-controls="tool-track" data-i18n-aria-label="nextTool" aria-label="下一个工具"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><path d="m10 6 6 6-6 6"/></svg></button>
           <span id="tool-position" class="carousel-position" aria-hidden="true">1 / 5</span>
           <p id="tool-status" class="visually-hidden" role="status" aria-live="polite" aria-atomic="true"></p>
+        </div>
         </div>
         <p class="tools-note"><span data-i18n="toolsNote">安装要求、使用说明和更新记录见各工具的 GitHub 页面。遇到问题，欢迎在对应仓库提交 Issue。</span></p>
         </div>

@@ -54,12 +54,9 @@
       "speakerFeature1": "指定音箱",
       "speakerFeature2": "托盘运行",
       "speakerFeature3": "开机自启",
-      "speakerCredit": "保活效果取决于音箱固件，需在自己的设备上验证。",
       "toolsNote": "安装要求、使用说明和更新记录见各工具的 GitHub 页面。遇到问题，欢迎在对应仓库提交 Issue。",
       "ferryCreditBefore": "基于 ",
       "ferryCreditAfter": " 持续改进。",
-      "macrightCreditBefore": "参考并复用 ",
-      "macrightCreditAfter": " 的部分资源。",
       "connectCreditBefore": "连接核心基于 ",
       "connectCreditAfter": "。",
       "markmapCreditBefore": "基于 ",
@@ -128,12 +125,9 @@
       "speakerFeature1": "Choose a speaker",
       "speakerFeature2": "Runs in the tray",
       "speakerFeature3": "Start at login",
-      "speakerCredit": "Effectiveness depends on the speaker firmware. Verify it on your own device.",
       "toolsNote": "Find requirements, instructions, and release notes on each tool's GitHub page. To report a problem, open an issue in its repository.",
       "ferryCreditBefore": "Built on ",
       "ferryCreditAfter": ", with continued improvements.",
-      "macrightCreditBefore": "Inspired by ",
-      "macrightCreditAfter": ", with some resources reused.",
       "connectCreditBefore": "Connection core based on ",
       "connectCreditAfter": ".",
       "markmapCreditBefore": "Adapted from ",
@@ -249,17 +243,33 @@
       .replace("{total}", String(slides.length));
   }
 
-  /** Enable native swipe navigation plus bounded buttons, dots and keyboard controls. */
+  /** Rotate visible tools every five seconds and pause while the visitor interacts. */
   function initializeCarousel() {
+    const carousel = document.getElementById("tool-carousel");
     const track = document.getElementById("tool-track");
     const slides = [...track.querySelectorAll(":scope > article")];
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let autoplayTimer = null;
+    let hovered = carousel.matches(":hover");
+    let keyboardFocused = false;
+    let inViewport = false;
+
+    /** Start a fresh reading interval only when the visible carousel can advance. */
+    function scheduleAutoplay() {
+      window.clearTimeout(autoplayTimer);
+      autoplayTimer = null;
+      const canAdvance = inViewport && !hovered && !keyboardFocused && !document.hidden;
+      document.getElementById("tool-status").setAttribute("aria-live", canAdvance ? "off" : "polite");
+      if (!canAdvance) return;
+      autoplayTimer = window.setTimeout(() => showTool((activeTool + 1) % slides.length), 5000);
+    }
 
     /** Scroll to a tool within the available range, respecting motion preferences. */
     function showTool(index) {
       activeTool = Math.max(0, Math.min(index, slides.length - 1));
       track.scrollTo({ left: slides[activeTool].offsetLeft, behavior: reducedMotion.matches ? "instant" : "smooth" });
       renderCarouselControls();
+      scheduleAutoplay();
     }
 
     document.getElementById("tool-prev").addEventListener("click", () => showTool(activeTool - 1));
@@ -280,8 +290,34 @@
       if (!visible) return;
       activeTool = slides.indexOf(visible.target);
       renderCarouselControls();
+      scheduleAutoplay();
     }, { root: track, threshold: 0.6 });
     slides.forEach((slide) => observer.observe(slide));
+    const viewportObserver = new IntersectionObserver((entries) => {
+      inViewport = entries[0].isIntersecting && entries[0].intersectionRatio >= 0.25;
+      scheduleAutoplay();
+    }, { threshold: 0.25 });
+    viewportObserver.observe(carousel);
+
+    carousel.addEventListener("pointerenter", (event) => {
+      if (event.pointerType !== "mouse") return;
+      hovered = true;
+      scheduleAutoplay();
+    });
+    carousel.addEventListener("pointerleave", (event) => {
+      if (event.pointerType !== "mouse") return;
+      hovered = false;
+      scheduleAutoplay();
+    });
+    carousel.addEventListener("focusin", (event) => {
+      keyboardFocused = event.target.matches(":focus-visible");
+      scheduleAutoplay();
+    });
+    carousel.addEventListener("focusout", (event) => {
+      keyboardFocused = carousel.contains(event.relatedTarget) && event.relatedTarget.matches(":focus-visible");
+      scheduleAutoplay();
+    });
+    document.addEventListener("visibilitychange", scheduleAutoplay);
     document.querySelector(".carousel-controls").hidden = false;
   }
 
