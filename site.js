@@ -9,8 +9,6 @@
     "navigation": "主导航",
     "preferences": "显示设置",
     "switchLanguage": "Switch to English",
-    "switchDark": "切换到深色外观",
-    "switchLight": "切换到浅色外观",
     "introLabel": "个人简介",
     "toolsLabel": "开源工具",
     "greeting": "Hi，我是 yjcdon",
@@ -18,7 +16,6 @@
     "background": "Java 后端出身，向产品经理与 AI 全栈开发方向发展",
     "contactLabel": "联系方式：",
     "toolsHeading": "开源工具",
-    "toolsIntroduction": "为自己的日常需求而做，也分享给有需要的人",
     "ferryDescription": "轻量客户端，统一百度、夸克网盘的文件管理",
     "download": "下载应用",
     "sourceAndGuide": "GitHub",
@@ -49,7 +46,9 @@
     "imagePreview": "图片预览",
     "viewOriginal": "查看原图",
     "connectTagline": "原生 APP，替代 EasyConnect",
-    "ferryMotto": "拒绝臃肿客户端，从我做起"
+    "ferryMotto": "拒绝臃肿客户端，从我做起",
+    "worldLabel": "YJCDON 的像素工坊",
+    "worldFooter": "以物质建设为中心"
   },
   "en": {
     "pageTitle": "yjcdon · Personal Website",
@@ -59,8 +58,6 @@
     "navigation": "Main navigation",
     "preferences": "Display preferences",
     "switchLanguage": "切换到中文",
-    "switchDark": "Switch to dark appearance",
-    "switchLight": "Switch to light appearance",
     "introLabel": "About me",
     "toolsLabel": "Open-source tools",
     "greeting": "Hi, I'm yjcdon",
@@ -68,7 +65,6 @@
     "background": "From Java backend development toward product management and AI-assisted full-stack development",
     "contactLabel": "Contact: ",
     "toolsHeading": "Open-source tools",
-    "toolsIntroduction": "Built for my everyday needs, shared with anyone who needs them",
     "ferryDescription": "A lightweight app for unified file management across Baidu and Quark cloud drives",
     "download": "Download",
     "sourceAndGuide": "GitHub",
@@ -99,17 +95,17 @@
     "imagePreview": "Image preview",
     "viewOriginal": "View original",
     "connectTagline": "A native app to replace EasyConnect",
-    "ferryMotto": "Saying no to bloated clients starts with me"
+    "ferryMotto": "Saying no to bloated clients starts with me",
+    "worldLabel": "YJCDON'S PIXEL WORKSHOP",
+    "worldFooter": "Focus on material development"
   }
 };
 
   const root = document.documentElement;
-  const systemAppearance = window.matchMedia("(prefers-color-scheme: dark)");
   let language = readChoice("language", ["zh", "en"])
     ?? (navigator.language.toLowerCase().startsWith("zh") ? "zh" : "en");
-  let themeChoice = readChoice("theme", ["light", "dark"]);
-  let theme = themeChoice ?? (systemAppearance.matches ? "dark" : "light");
   let activeTool = 0;
+  let toolsInView = false;
 
   /**
    * Read optional display preferences; restricted storage uses browser defaults.
@@ -142,11 +138,6 @@
     return value;
   }
 
-  /** Apply appearance before the stylesheet loads to avoid a saved-theme flash. */
-  function renderTheme() {
-    root.dataset.theme = theme;
-    document.querySelector('meta[name="theme-color"]').content = theme === "dark" ? "#000000" : "#ffffff";
-  }
 
   /** Translate page content, metadata and accessible descriptions together. */
   function renderLanguage() {
@@ -173,28 +164,33 @@
     languageToggle.setAttribute("aria-label", translate("switchLanguage"));
     languageToggle.title = translate("switchLanguage");
     document.getElementById("language-label").textContent = language === "zh" ? "EN" : "中";
-    const themeToggle = document.getElementById("theme-toggle");
-    const themeLabel = translate(theme === "dark" ? "switchLight" : "switchDark");
-    themeToggle.setAttribute("aria-label", themeLabel);
-    themeToggle.setAttribute("aria-pressed", String(theme === "dark"));
-    themeToggle.title = themeLabel;
     renderCarouselControls();
+  }
+
+  /** Load the selected tool's original assets only as the workshop approaches view. */
+  function loadToolImages() {
+    if (!toolsInView) return;
+    const slide = document.querySelectorAll("#tool-track > article")[activeTool];
+    const images = [...document.querySelectorAll(".carousel-dot img[data-src]"), ...slide.querySelectorAll("img[data-src]")];
+    images.forEach((image) => {
+      image.src = image.dataset.src;
+      image.removeAttribute("data-src");
+    });
   }
 
   /** Keep tool navigation, translated announcements and offscreen focus in sync. */
   function renderCarouselControls() {
+    loadToolImages();
     const slides = [...document.querySelectorAll("#tool-track > article")];
     const dots = [...document.querySelectorAll(".carousel-dot")];
     slides.forEach((slide, index) => {
       slide.inert = index !== activeTool;
       slide.setAttribute("aria-hidden", String(index !== activeTool));
       const name = slide.querySelector("h3").textContent;
-      dots[index].textContent = name;
+      dots[index].querySelector(".station-name").textContent = name;
       dots[index].setAttribute("aria-label", translate("showTool").replace("{name}", name));
       dots[index].setAttribute("aria-current", String(index === activeTool));
     });
-    document.getElementById("tool-prev").disabled = activeTool === 0;
-    document.getElementById("tool-next").disabled = activeTool === slides.length - 1;
     document.getElementById("tool-status").textContent = translate("toolStatus")
       .replace("{name}", slides[activeTool].querySelector("h3").textContent)
       .replace("{current}", String(activeTool + 1))
@@ -206,10 +202,22 @@
     const track = document.getElementById("tool-track");
     const slides = [...track.querySelectorAll(":scope > article")];
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let cardTransition;
+
+    /** Switch directly to the chosen card, then fade it in without traversing other tools. */
     function showTool(index) {
-      activeTool = Math.max(0, Math.min(index, slides.length - 1));
-      track.scrollTo({ left: slides[activeTool].offsetLeft, behavior: reducedMotion.matches ? "instant" : "smooth" });
+      const nextTool = ((index % slides.length) + slides.length) % slides.length;
+      if (nextTool === activeTool) return;
+      if (cardTransition) cardTransition.finish();
+      activeTool = nextTool;
+      track.scrollTo({ left: slides[activeTool].offsetLeft, behavior: "instant" });
       renderCarouselControls();
+      if (!reducedMotion.matches) {
+        cardTransition = slides[activeTool].animate(
+          [{ opacity: 0.45 }, { opacity: 1 }],
+          { duration: 160, easing: "ease-out" }
+        );
+      }
     }
     document.getElementById("tool-prev").addEventListener("click", () => showTool(activeTool - 1));
     document.getElementById("tool-next").addEventListener("click", () => showTool(activeTool + 1));
@@ -262,8 +270,12 @@
     dialog.addEventListener("close", () => trigger.focus({ preventScroll: true }));
   }
 
-  /** Bind language and appearance controls once the static page is ready. */
+  /** Bind language controls once the static page is ready. */
   function initialize() {
+    new IntersectionObserver(([entry]) => {
+      toolsInView = entry.isIntersecting;
+      loadToolImages();
+    }, { rootMargin: "160px" }).observe(document.getElementById("tools"));
     initializeCarousel();
     initializeImagePreview();
     renderLanguage();
@@ -273,22 +285,8 @@
       saveChoice("language", language);
       renderLanguage();
     });
-    document.getElementById("theme-toggle").addEventListener("click", () => {
-      themeChoice = theme === "dark" ? "light" : "dark";
-      theme = themeChoice;
-      saveChoice("theme", themeChoice);
-      renderTheme();
-      renderControls();
-    });
-    systemAppearance.addEventListener("change", (event) => {
-      if (themeChoice !== null) return;
-      theme = event.matches ? "dark" : "light";
-      renderTheme();
-      renderControls();
-    });
   }
 
   root.lang = language === "zh" ? "zh-CN" : "en";
-  renderTheme();
   document.addEventListener("DOMContentLoaded", initialize, { once: true });
 })();

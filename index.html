@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="theme-color" content="#ffffff">
+    <meta name="theme-color" content="#0b1120">
     <meta name="description" data-i18n-content="pageDescription" content="Hi，我是 yjcdon。Java 后端出身，向产品经理与 AI 全栈开发方向发展。分享自己日常使用的开源工具。">
     <meta property="og:title" data-i18n-content="pageTitle" content="yjcdon · 个人主页">
     <meta property="og:description" data-i18n-content="pageDescription" content="Hi，我是 yjcdon。Java 后端出身，向产品经理与 AI 全栈开发方向发展。分享自己日常使用的开源工具。">
@@ -12,8 +12,9 @@
     <title data-i18n="pageTitle">yjcdon · 个人主页</title>
     <link rel="canonical" href="https://yjcdon.github.io/">
     <link rel="icon" href="assets/favicon.svg?v=profile-2" type="image/svg+xml">
-    <script src="site.js?v=comments-20261103-5"></script>
-    <link rel="stylesheet" href="styles.css?v=real-app-icons-1">
+    <link rel="preload" href="assets/pixel-ui.woff2" as="font" type="font/woff2" crossorigin>
+    <script src="site.js?v=sky-world-10"></script>
+    <link rel="stylesheet" href="styles.css?v=sky-world-10">
   </head>
   <body>
     <a class="skip-link" href="#main"><span data-i18n="skip">跳到正文</span></a>
@@ -28,101 +29,110 @@
           </nav>
           <div class="preferences" role="group" data-i18n-aria-label="preferences" aria-label="显示设置" hidden>
             <button id="language-toggle" class="preference-button language-toggle" type="button" aria-label="Switch to English"><span id="language-label">EN</span></button>
-            <button id="theme-toggle" class="preference-button" type="button" aria-label="切换到深色外观" aria-pressed="false">
-              <svg class="moon-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none"><path d="M20.5 14A8.6 8.6 0 0 1 10 3.5 8.7 8.7 0 1 0 20.5 14Z"/></svg>
-              <svg class="sun-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.4 1.4m11.2 11.2L19 19M5 19l1.4-1.4M17.6 6.4 19 5"/></svg>
-            </button>
           </div>
         </div>
       </header>
     </div>
 
     <main id="main">
-      <section id="intro" class="intro wrap" aria-labelledby="intro-title">
+      <section id="intro" class="intro" aria-labelledby="intro-title">
+        <div class="intro-art" aria-hidden="true">
+          <div class="night-stars"><span style="--x:5%;--y:9%"></span><span style="--x:13%;--y:17%"></span><span style="--x:22%;--y:6%"></span><span style="--x:31%;--y:14%"></span><span style="--x:39%;--y:8%" class="star-bright"></span><span style="--x:48%;--y:19%"></span><span style="--x:56%;--y:5%"></span><span style="--x:63%;--y:13%"></span><span style="--x:72%;--y:8%" class="star-bright"></span><span style="--x:89%;--y:11%"></span><span style="--x:95%;--y:23%"></span><span style="--x:8%;--y:32%"></span><span style="--x:4%;--y:51%"></span><span style="--x:18%;--y:71%"></span><span style="--x:30%;--y:83%"></span><span style="--x:45%;--y:76%"></span><span style="--x:53%;--y:65%"></span><span style="--x:61%;--y:32%" class="star-bright"></span><span style="--x:67%;--y:24%"></span><span style="--x:73%;--y:41%"></span><span style="--x:92%;--y:37%" class="star-bright"></span><span style="--x:97%;--y:55%"></span><span style="--x:84%;--y:53%"></span><span style="--x:64%;--y:58%"></span><span style="--x:77%;--y:65%"></span><span style="--x:91%;--y:74%"></span><span style="--x:55%;--y:88%"></span><span style="--x:38%;--y:92%"></span><span style="--x:11%;--y:89%"></span><span style="--x:96%;--y:91%"></span></div>
+          <span class="intro-celestial"></span>
+          <img class="sky-cloud sky-cloud-far" src="assets/terraria/Cirrocumulus_cloud_5.png" width="238" height="72" alt="" decoding="async">
+          <img class="sky-cloud sky-cloud-left" src="assets/terraria/Cirrocumulus_cloud_5.png" width="238" height="72" alt="" decoding="async">
+          <img class="sky-cloud sky-cloud-low" src="assets/terraria/Cirrocumulus_cloud_5.png" width="238" height="72" alt="" decoding="async">
+        </div>
+
+        <div class="intro-inner wrap">
         <div class="intro-copy">
           <h1 id="intro-title" data-i18n="greeting">Hi，我是 yjcdon</h1>
           <p class="intro-lead"><span data-i18n="employment">目前就职于制造业龙头企业</span></p>
           <p class="intro-body"><span data-i18n="background">Java 后端出身，向产品经理与 AI 全栈开发方向发展</span></p>
           <p class="contact"><span data-i18n="contactLabel">联系方式：</span><a href="mailto:yjcdon@gmail.com">yjcdon@gmail.com</a></p>
         </div>
+
+        </div>
+
       </section>
 
       <section id="tools" class="tools" aria-labelledby="tools-title">
         <div class="wrap">
         <div class="section-heading">
           <h2 id="tools-title"><span data-i18n="toolsHeading">开源工具</span></h2>
-          <p><span data-i18n="toolsIntroduction">为自己的日常需求而做，也分享给有需要的人</span></p>
         </div>
 
         <div id="tool-carousel" class="tool-carousel">
+        <div class="carousel-controls" hidden>
+          <button id="tool-prev" class="carousel-arrow" type="button" aria-controls="tool-track" data-i18n-aria-label="previousTool" aria-label="上一个工具"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><path d="m14 6-6 6 6 6"/></svg></button>
+          <div class="carousel-dots" role="group" data-i18n-aria-label="toolNavigation" aria-label="切换工具">
+            <button class="carousel-dot" type="button" aria-controls="tool-track" aria-label="Ferry Plus" aria-current="true"><img src="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27/%3E" data-src="assets/ferry-nav.webp" width="64" height="64" alt="" decoding="async"><span class="station-name">Ferry Plus</span></button>
+            <button class="carousel-dot" type="button" aria-controls="tool-track" aria-label="miniEasyConnect" aria-current="false"><img src="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27/%3E" data-src="assets/connect-nav.webp" width="64" height="64" alt="" decoding="async"><span class="station-name">miniEasyConnect</span></button>
+            <button class="carousel-dot" type="button" aria-controls="tool-track" aria-label="MacRight" aria-current="false"><img src="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27/%3E" data-src="assets/macright-nav.webp" width="64" height="64" alt="" decoding="async"><span class="station-name">MacRight</span></button>
+            <button class="carousel-dot" type="button" aria-controls="tool-track" aria-label="Typora Markmap Plus" aria-current="false"><img src="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27/%3E" data-src="assets/markmap-icon.svg" width="64" height="64" alt="" decoding="async"><span class="station-name">Typora Markmap Plus</span></button>
+            <button class="carousel-dot" type="button" aria-controls="tool-track" aria-label="音箱静音保活" aria-current="false"><img src="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27/%3E" data-src="assets/speaker-silver.svg" width="64" height="64" alt="" decoding="async"><span class="station-name">音箱静音保活</span></button>
+          </div>
+          <button id="tool-next" class="carousel-arrow" type="button" aria-controls="tool-track" data-i18n-aria-label="nextTool" aria-label="下一个工具"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><path d="m10 6 6 6-6 6"/></svg></button>
+          <p id="tool-status" class="visually-hidden" role="status" aria-live="polite" aria-atomic="true"></p>
+        </div>
         <div id="tool-track" class="tool-track" role="region" data-i18n-aria-label="toolGallery" aria-label="开源工具展示" tabindex="0">
           <article class="tool-card featured" aria-labelledby="ferry-title">
             <div class="featured-copy">
-              <div class="card-top"><img class="tool-icon" src="assets/ferry-icon.png" alt="" width="76" height="76" decoding="async"><span class="platform">macOS · Apple Silicon</span></div>
               <h3 id="ferry-title">Ferry Plus</h3>
+            <div class="card-top"><span class="platform">macOS · Apple Silicon</span></div>
               <p class="tool-description"><span data-i18n="ferryDescription">轻量客户端，统一百度、夸克网盘的文件管理</span></p>
               <p class="tool-description"><span data-i18n="ferryMotto">拒绝臃肿客户端，从我做起</span></p>
               <div class="card-links"><a class="button small" href="https://github.com/yjcdon/ferry-plus/releases/latest" target="_blank" rel="noopener noreferrer"><span data-i18n="download">下载应用</span></a><a class="text-link" href="https://github.com/yjcdon/ferry-plus" target="_blank" rel="noopener noreferrer"><span data-i18n="sourceAndGuide">GitHub</span></a></div>
 
             </div>
-            <figure class="tool-preview"><a class="image-link" href="assets/ferry-files.png" data-i18n-aria-label="ferryImageLabel" aria-label="查看 Ferry Plus 界面原图"><img src="assets/ferry-files.png" data-i18n-alt="ferryImageAlt" alt="Ferry Plus 双网盘文件管理界面，目录名和日期已打码" width="940" height="922" decoding="async"></a></figure>
+            <figure class="tool-preview"><a class="image-link" href="assets/ferry-files.png" data-i18n-aria-label="ferryImageLabel" aria-label="查看 Ferry Plus 界面原图"><img src="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27/%3E" data-src="assets/ferry-files.png" data-i18n-alt="ferryImageAlt" alt="Ferry Plus 双网盘文件管理界面，目录名和日期已打码" width="940" height="922" loading="lazy" decoding="async"></a></figure>
           </article>
 
           <article class="tool-card with-preview" aria-labelledby="connect-title">
             <div class="featured-copy">
-            <div class="card-top"><img class="tool-icon" src="assets/connect-icon.png" alt="" width="76" height="76" decoding="async"><span class="platform">macOS · Apple Silicon</span></div>
             <h3 id="connect-title">miniEasyConnect</h3>
+            <div class="card-top"><span class="platform">macOS · Apple Silicon</span></div>
             <p class="tool-tagline"><span data-i18n="connectTagline">原生 APP，替代 EasyConnect</span></p>
             <div class="card-links"><a class="button small" href="https://github.com/yjcdon/miniEasyConnect/releases/latest" target="_blank" rel="noopener noreferrer"><span data-i18n="download">下载应用</span></a><a class="text-link" href="https://github.com/yjcdon/miniEasyConnect" target="_blank" rel="noopener noreferrer"><span data-i18n="sourceAndGuide">GitHub</span></a></div>
             </div>
-            <figure class="tool-preview"><a class="image-link" href="assets/connect-comparison.png" data-i18n-aria-label="connectImageLabel" aria-label="查看 miniEasyConnect 资源对比原图"><img src="assets/connect-comparison.png" data-i18n-alt="connectImageAlt" alt="用户提供的 EasyConnect 与 miniEasyConnect 资源对比原图，平均内存分别为 697.33 MB 和 60.73 MB" width="1504" height="946" loading="lazy" decoding="async"></a></figure>
+            <figure class="tool-preview"><a class="image-link" href="assets/connect-comparison.png" data-i18n-aria-label="connectImageLabel" aria-label="查看 miniEasyConnect 资源对比原图"><img src="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27/%3E" data-src="assets/connect-comparison.png" data-i18n-alt="connectImageAlt" alt="用户提供的 EasyConnect 与 miniEasyConnect 资源对比原图，平均内存分别为 697.33 MB 和 60.73 MB" width="1504" height="946" loading="lazy" decoding="async"></a></figure>
           </article>
 
           <article class="tool-card with-preview" aria-labelledby="macright-title">
             <div class="featured-copy">
-            <div class="card-top"><img class="tool-icon" src="assets/macright-icon.png" alt="" width="76" height="76" decoding="async"><span class="platform">macOS · Apple Silicon</span></div>
             <h3 id="macright-title">MacRight</h3>
+            <div class="card-top"><span class="platform">macOS · Apple Silicon</span></div>
             <p class="tool-tagline"><span data-i18n="macrightTagline">常用操作，右键完成</span></p>
             <p class="tool-description"><span data-i18n="macrightDescription">在 Finder 中新建常用文件、批量复制路径，或在当前目录打开终端</span></p>
             <div class="card-links"><a class="button small" href="https://github.com/yjcdon/MacRight/releases/latest" target="_blank" rel="noopener noreferrer"><span data-i18n="download">下载应用</span></a><a class="text-link" href="https://github.com/yjcdon/MacRight" target="_blank" rel="noopener noreferrer"><span data-i18n="sourceAndGuide">GitHub</span></a></div>
             </div>
-            <figure class="tool-preview"><a class="image-link" href="assets/macright-context-menu.jpg" data-i18n-aria-label="macrightImageLabel" aria-label="查看 MacRight 界面原图"><img src="assets/macright-context-menu.jpg" data-i18n-alt="macrightImageAlt" alt="MacRight 右键菜单，包含复制路径、在此打开终端及新建多种格式文件" width="702" height="366" loading="lazy" decoding="async"></a></figure>
+            <figure class="tool-preview"><a class="image-link" href="assets/macright-context-menu.jpg" data-i18n-aria-label="macrightImageLabel" aria-label="查看 MacRight 界面原图"><img src="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27/%3E" data-src="assets/macright-context-menu.jpg" data-i18n-alt="macrightImageAlt" alt="MacRight 右键菜单，包含复制路径、在此打开终端及新建多种格式文件" width="702" height="366" loading="lazy" decoding="async"></a></figure>
           </article>
 
           <article class="tool-card with-preview" aria-labelledby="markmap-title">
             <div class="featured-copy">
-            <div class="card-top"><img class="tool-icon" src="assets/markmap-icon.svg" alt="" width="76" height="76" decoding="async"><span class="platform"><span data-i18n="typoraPlatform">Typora 插件</span></span></div>
             <h3 id="markmap-title">Typora Markmap Plus</h3>
+            <div class="card-top"><span class="platform"><span data-i18n="typoraPlatform">Typora 插件</span></span></div>
             <p class="tool-tagline"><span data-i18n="markmapTagline">用思维导图梳理长文档</span></p>
             <p class="tool-description"><span data-i18n="markmapDescription">呈现标题、段落与多级列表，支持跳转原文及导出 HTML、SVG、PNG</span></p>
             <div class="card-links"><a class="button small" href="https://github.com/yjcdon/typora-plugin-markmap-plus#-安装" target="_blank" rel="noopener noreferrer"><span data-i18n="install">安装说明</span></a><a class="text-link" href="https://github.com/yjcdon/typora-plugin-markmap-plus" target="_blank" rel="noopener noreferrer"><span data-i18n="source">GitHub</span></a></div>
             </div>
-            <figure class="tool-preview"><a class="image-link" href="assets/markmap-demo.png" data-i18n-aria-label="markmapImageLabel" aria-label="查看 Markmap Plus 界面原图"><img src="assets/markmap-demo.png" data-i18n-alt="markmapImageAlt" alt="新建示例文档及其思维导图，展示多级列表的结构" width="1020" height="768" loading="lazy" decoding="async"></a></figure>
+            <figure class="tool-preview"><a class="image-link" href="assets/markmap-demo.png" data-i18n-aria-label="markmapImageLabel" aria-label="查看 Markmap Plus 界面原图"><img src="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27/%3E" data-src="assets/markmap-demo.png" data-i18n-alt="markmapImageAlt" alt="新建示例文档及其思维导图，展示多级列表的结构" width="1020" height="768" loading="lazy" decoding="async"></a></figure>
           </article>
 
           <article class="tool-card" aria-labelledby="speaker-title">
-            <div class="card-top"><img class="tool-icon" src="assets/speaker-silver.svg" alt="" width="76" height="76" decoding="async"><span class="platform">Windows 10</span></div>
             <h3 id="speaker-title"><span data-i18n="speakerName">音箱静音保活</span></h3>
+            <div class="card-top"><span class="platform">Windows 10</span></div>
             <p class="tool-tagline"><span data-i18n="speakerTagline">让音箱静音时，也不关机</span></p>
             <div class="card-links"><a class="button small" href="https://github.com/yjcdon/speaker-keep-alive/releases/latest" target="_blank" rel="noopener noreferrer"><span data-i18n="download">下载应用</span></a><a class="text-link" href="https://github.com/yjcdon/speaker-keep-alive" target="_blank" rel="noopener noreferrer"><span data-i18n="sourceAndGuide">GitHub</span></a></div>
           </article>
         </div>
-        <div class="carousel-controls" hidden>
-          <button id="tool-prev" class="carousel-arrow" type="button" aria-controls="tool-track" data-i18n-aria-label="previousTool" aria-label="上一个工具" disabled><svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><path d="m14 6-6 6 6 6"/></svg></button>
-          <div class="carousel-dots" role="group" data-i18n-aria-label="toolNavigation" aria-label="切换工具">
-            <button class="carousel-dot" type="button" aria-controls="tool-track" aria-label="Ferry Plus" aria-current="true">Ferry Plus</button>
-            <button class="carousel-dot" type="button" aria-controls="tool-track" aria-label="miniEasyConnect" aria-current="false">miniEasyConnect</button>
-            <button class="carousel-dot" type="button" aria-controls="tool-track" aria-label="MacRight" aria-current="false">MacRight</button>
-            <button class="carousel-dot" type="button" aria-controls="tool-track" aria-label="Typora Markmap Plus" aria-current="false">Typora Markmap Plus</button>
-            <button class="carousel-dot" type="button" aria-controls="tool-track" aria-label="音箱静音保活" aria-current="false">音箱静音保活</button>
-          </div>
-          <button id="tool-next" class="carousel-arrow" type="button" aria-controls="tool-track" data-i18n-aria-label="nextTool" aria-label="下一个工具"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><path d="m10 6 6 6-6 6"/></svg></button>
-          <p id="tool-status" class="visually-hidden" role="status" aria-live="polite" aria-atomic="true"></p>
-        </div>
+
         </div>
         </div>
       </section>
     </main>
+    <footer class="world-footer"><span aria-hidden="true">+</span> <span data-i18n="worldFooter">以物质建设为中心</span> <span aria-hidden="true">+</span></footer>
     <dialog id="image-dialog" aria-label="图片预览" data-i18n-aria-label="imagePreview">
       <div class="image-toolbar"><a id="image-original" class="text-link" target="_blank" rel="noopener noreferrer" data-i18n="viewOriginal">查看原图</a><button id="image-close" type="button" data-i18n="closeImage" autofocus>关闭图片</button></div>
       <img id="image-full" alt="">

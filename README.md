@@ -1,43 +1,69 @@
-# yjcdon 的个人主页
+# yjcdon 的像素工坊
 
 网站：<https://yjcdon.github.io/>
 
-页面保留个人简介和开源工具两个内容区。个人简介展示任职情况、产品经理与 AI 全栈开发方向及联系方式；工具按 Ferry Plus、miniEasyConnect、MacRight、Typora Markmap Plus、音箱静音保活排序。
+个人主页采用泰拉瑞亚游戏素材构成的像素场景，保留个人简介和开源工具两大内容区：访客先在天空场景阅读简介，再向下滚动查看开源工具。现有工具文案、真实截图、下载链接和 GitHub 入口保持有效。
 
-## 展示与交互
+## 页面与交互
 
-沿用系统字体、大标题、蓝色主要按钮及深浅色外观，导航使用不透明背景。工具以单项轮播展示，支持工具名称入口、左右按钮、触屏滑动，以及轮播区域获得焦点后的方向键和 Home/End。采用手动切换，方便阅读与查看图片；未展示项退出键盘焦点顺序。布局变化时保持当前工具，动效遵循系统减少动态效果偏好。
+- 首屏：天空背景、偏左上的个人介绍与右侧太阳/月亮；名字保持同一行，显示任职情况、产品经理与 AI 全栈开发方向及邮箱。
+- 开源工具：Ferry Plus、miniEasyConnect、MacRight、Typora Markmap Plus、音箱静音保活在切换入口展示对应应用图标（音箱沿用选定的 C 款银灰图标），详情面板保留平台、名称、说明与截图。
+- 工具支持工位名称选择、左右按钮、触屏滑动、方向键及 Home/End；左右按钮和方向键首尾循环，内容保持手动切换，方便阅读。非当前工具退出键盘焦点顺序。
+- 工位选中时播放一次短动画；首屏装饰保持静态，系统减少动态效果偏好下直接切换工具。
+- 支持中英文，首次访问跟随浏览器语言，手动选择保存在本机。页面固定暗色，不再读取或写入主题偏好；首屏固定显示月亮。
+- 手机端保留正常纵向滚动，工位选择横向滑动，工具详情与截图上下排列。
+- 截图按原比例显示，点击进入图片弹窗，支持关闭按钮、Escape、点击遮罩关闭及原图入口。GitHub 在新标签打开，邮箱使用 mailto 链接。
 
-工具卡片展示用途、平台、下载和 GitHub 入口。Ferry Plus 介绍为“轻量客户端，统一百度、夸克网盘的文件管理”，下方展示“拒绝臃肿客户端，从我做起”；miniEasyConnect 介绍为“原生 APP，替代 EasyConnect”。工具卡片直接展示截图，相关来源见各工具仓库。截图按原比例完整显示，点击打开原生图片预览弹窗，支持关闭按钮、Escape 和点击遮罩关闭，关闭后恢复触发入口焦点；弹窗提供原图链接。禁用 JavaScript 时图片链接直接打开原图。
+## 加载与字体
 
-全站支持中英文和深浅色。首次访问跟随浏览器语言与系统外观，访客选择保存在本机。GitHub 链接在新标签打开，邮箱使用 mailto 链接。
+使用原生 HTML、CSS 和少量 JavaScript，无游戏引擎、运行时 API 或在线字体依赖。主要标题、导航、按钮和短标语使用本地像素字体，长说明使用系统字体。
+
+`assets/pixel-ui.woff2` 是 Fusion Pixel 12px 简体中文字体的本页子集，约 10 KB。首屏使用官方 Wiki 一张透明云朵 PNG，以及按主题切换的太阳/月亮，保持原图内容；工位入口使用应用图标。应用图标在工具区接近视野时统一加载；工具截图只加载当前工位，其他截图在选中后加载。
+
+修改中英文文案后，应重新生成字体子集，避免新增文字缺字：
+
+```sh
+uv run --with fonttools --with brotli scripts/subset-pixel-font.py
+```
+
+脚本从上游下载固定版本 `2026.10.25`，检查字形并生成自托管字体及许可文件；网站访问过程无需下载上游字体。首次生成需联网。静态脚本、样式或字体更新时，同步更新 `index.html` 中的缓存版本。
 
 ## 文件与维护
 
-- `index.html`：个人简介、工具内容、链接和图片预览弹窗。
-- `styles.css`：实色配色、布局和移动端适配。
-- `site.js`：双语文案、轮播、图片预览及显示偏好。
-- `assets/`：本地图片和图标。
+- `index.html`：两个内容区、场景装饰、工位入口和图片弹窗。
+- `styles.css`：像素视觉、固定暗色、动画、响应式布局及减少动态效果适配。
+- `site.js`：双语、语言偏好、工位切换、图片按需加载和弹窗。
+- `assets/terraria/`：森林、洞穴、向导、家具、方块、太阳和月亮等游戏素材；逐个来源见 `sources.json`。
+- `scripts/subset-pixel-font.py`：生成字体子集。
 
-使用原生 HTML、CSS、JavaScript，无构建步骤、外部字体或运行时 API。文案同时维护 HTML 默认中文及脚本中英文词条；修改静态脚本与样式后更新 HTML 的 `v` 参数。
-
-本地预览：
-
-```sh
-python3 -I -m http.server 8765 --bind 127.0.0.1 --directory /Users/yjcdon/mycode/yjcdon.github.io
-```
-
-访问 <http://127.0.0.1:8765/>。GitHub Pages 从 main 分支根目录发布，推送前先在本地确认展示效果。
+可直接打开 `index.html` 本地预览。GitHub Pages 从 main 分支根目录发布。
 
 ## 素材与来源
 
-- `assets/ferry-files.png`：通过 Computer Use 采集真实应用窗口，已不可逆遮盖文件夹名称、日期和任务数量。仅使用脱敏版本。
-- `assets/connect-comparison.png`：用户提供的资源对比原图，完整保留，未裁切、重绘或修改文字。与输入原图 SHA-256 一致。
-- `assets/macright-context-menu.jpg`：用户提供的 MacRight 右键菜单截图，按原图复制，未裁切或重绘；支持点击查看原图。
-- `assets/markmap-demo.png`：在 Typora 新建展示文档，生成真实思维导图后截图；裁去私人文件侧栏。未使用已有私人文档内容。
-- 原有 `assets/ferry-plus.jpg`、`assets/markmap-plus.png` 保留，当前页面不引用。
-- 音箱工具当前仅展示文字，尚无 Windows 环境截图。
-- `assets/ferry-icon.png`、`assets/connect-icon.png`、`assets/macright-icon.png`：从已安装应用的 AppIcon.icns 提取，保留真实图标外观。
-- `assets/markmap-icon.svg`：取自插件 FloatingButton.ts 中的默认悬浮按钮图标，白色圆形表面沿用插件样式。
-- `assets/speaker-silver.svg`：用户选定的 C 款银灰图标，使用 Tabler Icons 的 device-speaker 符号，配银灰渐变圆角底。MIT 许可见 `assets/tabler-icons-LICENSE.txt`。原有音箱图标素材保留，当前页面使用 SVG。
-- 应用原作者、许可及复用来源以各工具仓库为准，页面保留相关上游链接。
+- 泰拉瑞亚游戏素材来自官方 Wiki <https://terraria.wiki.gg/>，版权归 Re-Logic；逐文件页面与原图地址保存在 `assets/terraria/sources.json`。这些素材单独标注来源，不适用字体或图标的开源许可。
+- Fusion Pixel Font：<https://github.com/TakWolf/fusion-pixel-font>，SIL OFL 1.1，当前本地子集命名为 YJ Pixel Workshop。上游及组成字体许可保留在 `assets/pixel-font-licenses/`。
+- `assets/ferry-files.png`：真实应用截图，目录、日期及任务数量已遮盖。
+- `assets/connect-comparison.png`：用户提供的资源对比原图。
+- `assets/macright-context-menu.jpg`：用户提供的 MacRight 右键菜单原图。
+- `assets/markmap-demo.png`：新建示例文档生成的真实导图截图。
+- Ferry、miniEasyConnect、MacRight 图标提取自对应应用；Markmap 图标来自插件默认悬浮按钮。
+- `assets/speaker-silver.svg`：用户选定的 C 款银灰图标，采用 Tabler Icons 的 device-speaker 符号，许可见 `assets/tabler-icons-LICENSE.txt`。
+- 其他历史截图和图标保留，当前页面资源引用以 HTML 与 CSS 为准。应用许可及上游关系见各工具仓库。
+
+切换区的三个 PNG 应用图标使用 128 px WebP 缩略图，外观沿用原图，进入工具区时加载。页脚文案为“以物质建设为中心”，个人简介区直接通过导航进入工具区。
+
+所有工具平台标签位于标题下方。
+
+手动选择工具时直接定位目标卡片，再执行 160 ms 的淡入。首尾循环和跨项选择均不滚过中间卡片；快速切换会先结束上一段淡入，减少动态效果偏好下直接切换。触屏滑动继续使用原生滚动与吸附。
+
+
+## 首屏素材与字体
+
+首屏使用官方 Wiki 的 Cirrocumulus cloud 5 和 [Moon](https://terraria.wiki.gg/wiki/File:Moon.png) 原图，来源见 `assets/terraria/sources.json`。太阳、月亮已逐字节核对官方原图。首屏固定使用 50 × 50 px 的官方月亮原图；太阳、亮色样式、主题切换按钮与主题存储逻辑已移除。小白龙及其动画已移除。简介保留告示牌式衬底，工具区恢复泰拉瑞亚蓝色物品栏、金色选中边框、洞穴纹理背景和绿色下载按钮。
+
+
+官方 Wiki 标注游戏字体为 [Andy Bold](https://terraria.wiki.gg/wiki/Font)；[微软字体资料](https://learn.microsoft.com/en-us/typography/font-list/andy)列出其拉丁字符集与字体授权入口。首屏通过 `local()` 优先使用设备已安装的 Andy Bold / Andy Pro Bold，没有打包或下载商业字体；未安装或缺少中文字形时使用现有 Fusion Pixel 子集。这不代表所有访客都能看到游戏原版字体，中文原版字体尚未确认。下方工具区字体维持现状。
+
+首屏夜空增加疏密不一的静态像素星点；官方透明云图在月亮下方与首屏底部按原尺寸或整数倍呈现，以较低透明度区分远近。星点与云层均无动画，无额外网络依赖；告示牌、月亮和工具区保持原位置。
+
+工具区标题旁装饰使用官方 Wiki 的透明 Diamond.png，按原图两倍尺寸（36 × 32 px）显示，来源记录于 sources.json。
