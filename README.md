@@ -7,7 +7,7 @@
 ## 页面与交互
 
 - 首屏：天空背景、偏左上的个人介绍与右侧太阳/月亮；名字保持同一行，显示任职情况、产品经理与 AI 全栈开发方向及邮箱。
-- 开源工具：Ferry Plus、miniEasyConnect、MacRight、Typora Markmap Plus、音箱静音保活、网页视频长按倍速在切换入口展示对应应用图标（音箱沿用选定的 C 款银灰图标），详情面板保留平台、名称、说明与截图。
+- 开源工具：轮播展示 Ferry Drive、miniEasyConnect、MacRight 和浏览器扩展。Ferry Drive 标为跨平台，浏览器扩展入口使用像素风 Chrome 图标，卡内显示倍速、X 和抖音扩展各自的图标。Typora Markmap Plus 和蓝牙音箱静音保活也在轮播中独立展示。
 - 工具支持工位名称选择、左右按钮、触屏滑动、方向键及 Home/End；左右按钮和方向键首尾循环，内容保持手动切换，方便阅读。非当前工具退出键盘焦点顺序。
 - 工位选中时播放一次短动画；首屏装饰保持静态，系统减少动态效果偏好下直接切换工具。
 - 支持中英文，首次访问跟随浏览器语言，手动选择保存在本机。页面固定暗色，不再读取或写入主题偏好；首屏固定显示月亮。
@@ -42,7 +42,7 @@ uv run --with fonttools --with brotli scripts/subset-pixel-font.py
 
 - 泰拉瑞亚游戏素材来自官方 Wiki <https://terraria.wiki.gg/>，版权归 Re-Logic；逐文件页面与原图地址保存在 `assets/terraria/sources.json`。这些素材单独标注来源，不适用字体或图标的开源许可。
 - Fusion Pixel Font：<https://github.com/TakWolf/fusion-pixel-font>，SIL OFL 1.1，当前本地子集命名为 YJ Pixel Workshop。上游及组成字体许可保留在 `assets/pixel-font-licenses/`。
-- `assets/ferry-files.png`：真实应用截图，目录、日期及任务数量已遮盖。
+- `assets/ferry-drive-preview.png`：用户提供的 Ferry Drive 夸克网盘文件管理截图。
 - `assets/connect-comparison.png`：用户提供的资源对比原图。
 - `assets/macright-context-menu.jpg`：用户提供的 MacRight 右键菜单原图。
 - `assets/markmap-demo.png`：新建示例文档生成的真实导图截图。

@@ -592,6 +592,33 @@ h3 {
   object-fit: contain;
   border-radius: 8px;
 }
+.extension-list {
+  margin: 16px 0 0;
+  padding: 0;
+  list-style: none;
+  text-align: left;
+}
+.extension-list li {
+  padding: 12px 0;
+  border-bottom: 1px solid var(--line);
+}
+.extension-list li:last-child {
+  border-bottom: 0;
+}
+.extension-list h4 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font: 16px/1.5 var(--pixel);
+}
+.extension-list h4 img {
+  flex: none;
+  object-fit: contain;
+}
+.extension-list .tool-description {
+  margin: 5px 0 0;
+}
 .world-footer {
   padding: 28px 18px 38px;
   text-align: center;
