@@ -2,6 +2,13 @@
   "use strict";
   const messages = {
   "zh": {
+    "meegoName": "飞书项目 MCP（Go 版）",
+    "meegoDescription": "Go 单文件 MCP 进程，无需额外依赖",
+    "meegoMemory": "内存占用比原版 Node.js 进程减少约 83%",
+    "meegoGuide": "安装教程",
+    "meegoDownload": "下载",
+    "meegoImageLabel": "查看资源占用对比原图",
+    "meegoImageAlt": "飞书项目 MCP 的 Node.js 版与 Go 版资源占用对比",
     "crossPlatform": "跨平台",
     "browserExtensions": "浏览器扩展",
     "xExtensionDescription": "按需翻译帖子、直开外链，快捷管理关注",
@@ -60,6 +67,13 @@
     "worldFooter": "以物质建设为中心"
   },
   "en": {
+    "meegoName": "Feishu Project MCP (Go)",
+    "meegoDescription": "A single Go MCP binary with no extra dependencies",
+    "meegoMemory": "Uses about 83% less memory than the original Node.js process",
+    "meegoGuide": "Installation guide",
+    "meegoDownload": "Download",
+    "meegoImageLabel": "View the resource usage comparison",
+    "meegoImageAlt": "Resource usage comparison between the Node.js and Go versions of Feishu Project MCP",
     "crossPlatform": "Cross-platform",
     "browserExtensions": "Browser extensions",
     "xExtensionDescription": "Translate posts on demand, open external links directly, and manage follows quickly",
@@ -205,7 +219,10 @@
       slide.inert = index !== activeTool;
       slide.setAttribute("aria-hidden", String(index !== activeTool));
       const name = slide.querySelector("h3").textContent;
-      dots[index].querySelector(".station-name").textContent = name;
+      const label = dots[index].querySelector(".station-name");
+      label.textContent = label.classList.contains("station-name-lines")
+        ? name.replace(/\s*(?=[（(])/, "\n")
+        : name;
       dots[index].setAttribute("aria-label", translate("showTool").replace("{name}", name));
       dots[index].setAttribute("aria-current", String(index === activeTool));
     });
