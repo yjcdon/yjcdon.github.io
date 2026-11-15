@@ -4,7 +4,7 @@
   "zh": {
     "crossPlatform": "跨平台",
     "browserExtensions": "浏览器扩展",
-    "xExtensionDescription": "查看关注数据，快捷关注、取关和屏蔽账号",
+    "xExtensionDescription": "按需翻译帖子、直开外链，快捷管理关注",
     "douyinExtensionDescription": "复制标题和短链接，精简精选页交互",
     "pageTitle": "yjcdon · 个人主页",
     "pageDescription": "Hi，我是 yjcdon。Java 后端出身，向产品经理与 AI 全栈开发方向发展。分享自己日常使用的开源工具。",
@@ -62,7 +62,7 @@
   "en": {
     "crossPlatform": "Cross-platform",
     "browserExtensions": "Browser extensions",
-    "xExtensionDescription": "See follower counts and quickly follow, unfollow or block accounts",
+    "xExtensionDescription": "Translate posts on demand, open external links directly, and manage follows quickly",
     "douyinExtensionDescription": "Copy titles and short links and simplify the featured feed",
     "pageTitle": "yjcdon · Personal Website",
     "pageDescription": "Hi, I'm yjcdon. From Java backend development toward product management and AI-assisted full-stack development. Explore the open-source tools I use every day.",
