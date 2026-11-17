@@ -18,7 +18,12 @@ def main():
     with urlopen(URL, timeout=30) as response:
         archive = ZipFile(BytesIO(response.read()))
     font = TTFont(BytesIO(archive.read("fusion-pixel-12px-proportional-zh_hans.otf.woff2")))
-    text = (ROOT / "index.html").read_text() + (ROOT / "site.js").read_text()
+    text = "\n".join(
+        path.read_text() for path in sorted((ROOT / "src").rglob("*"))
+        if path.suffix in {".svelte", ".ts"}
+    )
+    # The magnifier uses the system emoji font.
+    text = text.replace("\U0001f50d", "")
     text += "".join(chr(code) for code in range(32, 127))
     characters = {ord(char) for char in text if ord(char) > 32}
     # Source markup also contains code punctuation; visible CJK and Latin glyphs must exist.
@@ -35,13 +40,13 @@ def main():
     for record in font["name"].names:
         if record.nameID in (1, 4, 6):
             record.string = ("YJPixelWorkshop" if record.nameID == 6 else "YJ Pixel Workshop").encode(record.getEncoding())
-    font.save(ROOT / "assets/pixel-ui.woff2")
+    font.save(ROOT / "src/lib/assets/pixel-ui.woff2")
     for name in archive.namelist():
         if name.endswith(".txt"):
-            target = ROOT / "assets/pixel-font-licenses" / name
+            target = ROOT / "static/assets/pixel-font-licenses" / name
             target.parent.mkdir(parents=True, exist_ok=True)
             target.write_bytes(archive.read(name))
-    print(f"Pixel font: {(ROOT / 'assets/pixel-ui.woff2').stat().st_size:,} bytes")
+    print(f"Pixel font: {(ROOT / 'src/lib/assets/pixel-ui.woff2').stat().st_size:,} bytes")
 
 
 if __name__ == "__main__":

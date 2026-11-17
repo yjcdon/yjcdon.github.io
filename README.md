@@ -18,9 +18,9 @@
 
 ## 加载与字体
 
-使用原生 HTML、CSS 和少量 JavaScript，无游戏引擎、运行时 API 或在线字体依赖。主要标题、导航、按钮和短标语使用本地像素字体，长说明使用系统字体。
+使用 Svelte 5、SvelteKit 和 TypeScript，构建时预渲染为静态 HTML，交互由客户端组件接管。主要标题、导航、按钮和短标语使用本地像素字体，长说明使用系统字体。
 
-`assets/pixel-ui.woff2` 是 Fusion Pixel 12px 简体中文字体的本页子集，约 10 KB。首屏使用官方 Wiki 一张透明云朵 PNG，以及按主题切换的太阳/月亮，保持原图内容；工位入口使用应用图标。应用图标在工具区接近视野时统一加载；工具截图只加载当前工位，其他截图在选中后加载。
+`src/lib/assets/pixel-ui.woff2` 是 Fusion Pixel 12px 简体中文字体的本页子集，约 13 KB。首屏使用官方 Wiki 一张透明云朵 PNG，以及按主题切换的太阳/月亮，保持原图内容；工位入口使用应用图标。应用图标在工具区接近视野时统一加载；工具截图只加载当前工位，其他截图在选中后加载。
 
 修改中英文文案后，应重新生成字体子集，避免新增文字缺字：
 
@@ -28,28 +28,41 @@
 uv run --with fonttools --with brotli scripts/subset-pixel-font.py
 ```
 
-脚本从上游下载固定版本 `2026.10.25`，检查字形并生成自托管字体及许可文件；网站访问过程无需下载上游字体。首次生成需联网。静态脚本、样式或字体更新时，同步更新 `index.html` 中的缓存版本。
+脚本从上游下载固定版本 `2026.10.25`，检查字形并生成自托管字体及许可文件；网站访问过程无需下载上游字体。首次生成需联网。构建自动生成脚本、样式和字体的哈希文件名。
+
+## 开发与发布
+
+使用 Node.js 22.12+ 和 pnpm，执行以下命令。
+
+```sh
+pnpm install
+pnpm dev
+pnpm check
+pnpm build
+pnpm preview
+```
+
+开发预览默认位于 http://localhost:5173，生产构建预览默认位于 http://localhost:4173。构建产物位于 `build/`，可以部署到静态站点服务。
 
 ## 文件与维护
 
-- `index.html`：两个内容区、场景装饰、工位入口和图片弹窗。
-- `styles.css`：像素视觉、固定暗色、动画、响应式布局及减少动态效果适配。
-- `site.js`：双语、语言偏好、工位切换、图片按需加载和弹窗。
-- `assets/terraria/`：森林、洞穴、向导、家具、方块、太阳和月亮等游戏素材；逐个来源见 `sources.json`。
-- `scripts/subset-pixel-font.py`：生成字体子集。
-
-可直接打开 `index.html` 本地预览。GitHub Pages 从 main 分支根目录发布。
+- `src/lib/content.ts` 集中维护工具顺序、分组、中英文文案、图标、链接与截图。新增工具只需添加一个记录。
+- `src/routes/+page.svelte` 组织首屏、工具目录和详情，管理语言和工具选择。
+- `src/lib/components/ToolGallery.svelte` 负责截图轮播，`ImagePreview.svelte` 负责原图弹窗。
+- `src/app.css` 维护像素视觉、响应式布局与减少动态效果适配。
+- `static/assets/` 存放原始图片与图标，对应发布后的 `/assets/` 路径。
+- `scripts/subset-pixel-font.py` 扫描 Svelte 和 TypeScript 文案，生成像素字体子集。放大镜 emoji 使用系统字体。
 
 ## 素材与来源
 
-- 泰拉瑞亚游戏素材来自官方 Wiki <https://terraria.wiki.gg/>，版权归 Re-Logic；逐文件页面与原图地址保存在 `assets/terraria/sources.json`。这些素材单独标注来源，不适用字体或图标的开源许可。
-- Fusion Pixel Font：<https://github.com/TakWolf/fusion-pixel-font>，SIL OFL 1.1，当前本地子集命名为 YJ Pixel Workshop。上游及组成字体许可保留在 `assets/pixel-font-licenses/`。
-- `assets/ferry-drive-preview.png`：用户提供的 Ferry Drive 夸克网盘文件管理截图。
-- `assets/previews/connect-connected.png` 和 `assets/connect-comparison.png`：用户提供的 miniEasyConnect 已连接界面和资源占用对比。
-- `assets/macright-context-menu.jpg`：用户提供的 MacRight 右键菜单原图。
-- `assets/markmap-demo.png` 和 `assets/previews/markmap-export-menu.png`：用户提供的 Typora 导图界面和导出菜单截图。
+- 泰拉瑞亚游戏素材来自官方 Wiki <https://terraria.wiki.gg/>，版权归 Re-Logic；逐文件页面与原图地址保存在 `static/assets/terraria/sources.json`。这些素材单独标注来源，不适用字体或图标的开源许可。
+- Fusion Pixel Font：<https://github.com/TakWolf/fusion-pixel-font>，SIL OFL 1.1，当前本地子集命名为 YJ Pixel Workshop。上游及组成字体许可保留在 `static/assets/pixel-font-licenses/`。
+- `static/assets/ferry-drive-preview.png`：用户提供的 Ferry Drive 夸克网盘文件管理截图。
+- `static/assets/previews/connect-connected.png` 和 `static/assets/connect-comparison.png`：用户提供的 miniEasyConnect 已连接界面和资源占用对比。
+- `static/assets/macright-context-menu.jpg`：用户提供的 MacRight 右键菜单原图。
+- `static/assets/markmap-demo.png` 和 `static/assets/previews/markmap-export-menu.png`：用户提供的 Typora 导图界面和导出菜单截图。
 - Ferry、miniEasyConnect、MacRight 图标提取自对应应用；Markmap 图标来自插件默认悬浮按钮。
-- `assets/speaker-silver.svg`：用户选定的 C 款银灰图标，采用 Tabler Icons 的 device-speaker 符号，许可见 `assets/tabler-icons-LICENSE.txt`。
+- `static/assets/speaker-silver.svg`：用户选定的 C 款银灰图标，采用 Tabler Icons 的 device-speaker 符号，许可见 `static/assets/tabler-icons-LICENSE.txt`。
 - 其他历史截图和图标保留，当前页面资源引用以 HTML 与 CSS 为准。应用许可及上游关系见各工具仓库。
 
 切换区的三个 PNG 应用图标使用 128 px WebP 缩略图，外观沿用原图，进入工具区时加载。页脚文案为“以物质建设为中心”，个人简介区直接通过导航进入工具区。
@@ -58,7 +71,7 @@ uv run --with fonttools --with brotli scripts/subset-pixel-font.py
 
 ## 首屏素材与字体
 
-首屏使用官方 Wiki 的 Cirrocumulus cloud 5 和 [Moon](https://terraria.wiki.gg/wiki/File:Moon.png) 原图，来源见 `assets/terraria/sources.json`。太阳、月亮已逐字节核对官方原图。首屏固定使用 50 × 50 px 的官方月亮原图；太阳、亮色样式、主题切换按钮与主题存储逻辑已移除。小白龙及其动画已移除。简介保留告示牌式衬底，工具区恢复泰拉瑞亚蓝色物品栏、金色选中边框、洞穴纹理背景和绿色下载按钮。
+首屏使用官方 Wiki 的 Cirrocumulus cloud 5 和 [Moon](https://terraria.wiki.gg/wiki/File:Moon.png) 原图，来源见 `static/assets/terraria/sources.json`。太阳、月亮已逐字节核对官方原图。首屏固定使用 50 × 50 px 的官方月亮原图；太阳、亮色样式、主题切换按钮与主题存储逻辑已移除。小白龙及其动画已移除。简介保留告示牌式衬底，工具区恢复泰拉瑞亚蓝色物品栏、金色选中边框、洞穴纹理背景和绿色下载按钮。
 
 
 官方 Wiki 标注游戏字体为 [Andy Bold](https://terraria.wiki.gg/wiki/Font)；[微软字体资料](https://learn.microsoft.com/en-us/typography/font-list/andy)列出其拉丁字符集与字体授权入口。首屏通过 `local()` 优先使用设备已安装的 Andy Bold / Andy Pro Bold，没有打包或下载商业字体；未安装或缺少中文字形时使用现有 Fusion Pixel 子集。这不代表所有访客都能看到游戏原版字体，中文原版字体尚未确认。下方工具区字体维持现状。

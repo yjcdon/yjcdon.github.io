@@ -1,6 +1,6 @@
 @font-face {
   font-family: "YJ Pixel";
-  src: url("assets/pixel-ui.woff2?v=sky-world-53") format("woff2");
+  src: url("./lib/assets/pixel-ui.woff2") format("woff2");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -130,7 +130,7 @@ img {
   content: "";
   width: 22px;
   height: 22px;
-  background: url("assets/terraria/Gold_Chest.png") center / contain no-repeat;
+  background: url("/assets/terraria/Gold_Chest.png") center / contain no-repeat;
   image-rendering: pixelated;
 }
 .wordmark:hover {
@@ -332,10 +332,10 @@ nav a:hover {
   height: 114px;
   top: 15%;
   right: 16%;
-  background: url("assets/terraria/Moon.png") center / contain no-repeat;
+  background: url("/assets/terraria/Moon.png") center / contain no-repeat;
   image-rendering: pixelated;
 
-  background-image: url("assets/terraria/Moon.png");
+  background-image: url("/assets/terraria/Moon.png");
   background-size: 50px 50px;
   mix-blend-mode: normal;
 }
@@ -359,7 +359,7 @@ nav a:hover {
   color: var(--ink);
   background:
     linear-gradient(#15233bd9, #15233bd9),
-    url("assets/terraria/Cavern_background_1.png") repeat;
+    url("/assets/terraria/Cavern_background_1.png") repeat;
   background-size:
     auto,
     160px 160px;
@@ -377,7 +377,7 @@ nav a:hover {
   top: 0;
   width: 36px;
   height: 32px;
-  background: url("assets/terraria/Diamond.png") center / contain no-repeat;
+  background: url("/assets/terraria/Diamond.png") center / contain no-repeat;
   image-rendering: pixelated;
 }
 .section-heading {
