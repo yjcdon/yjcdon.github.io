@@ -2,6 +2,14 @@
   "use strict";
   const messages = {
   "zh": {
+    "connectConnectedImage": "miniEasyConnect 已连接界面与连接记录",
+    "ferryBaiduImageLabel": "查看 Ferry Drive 百度网盘界面原图",
+    "ferryBaiduImageAlt": "Ferry Drive 百度网盘文件管理界面",
+    "ferryTransferSettingsImage": "Ferry Drive 的并发传输和限速设置",
+    "markmapExportImage": "Markmap Plus 导出菜单，支持 HTML、SVG 和 PNG",
+    "macrightSettingsImage": "MacRight 设置界面",
+    "previousImage": "上一张图",
+    "nextImage": "下一张图",
     "meegoName": "飞书项目 MCP（Go 版）",
     "meegoStation": "飞书项目 MCP\n（Go 版）",
     "meegoDescription": "Go 单文件 MCP 进程，无需额外依赖",
@@ -48,7 +56,7 @@
     "ferryImageLabel": "查看 Ferry Drive 界面原图",
     "ferryImageAlt": "Ferry Drive 夸克网盘文件管理界面",
     "markmapImageLabel": "查看 Markmap Plus 界面原图",
-    "markmapImageAlt": "新建示例文档及其思维导图，展示多级列表的结构",
+    "markmapImageAlt": "Typora 中的周末徒步计划文档与 Markmap Plus 思维导图",
     "toolGallery": "开源工具展示",
     "toolNavigation": "切换工具",
     "showTool": "查看 {name}",
@@ -66,6 +74,14 @@
     "worldFooter": "以物质建设为中心"
   },
   "en": {
+    "connectConnectedImage": "miniEasyConnect connected status and saved connections",
+    "ferryBaiduImageLabel": "View the full Ferry Drive Baidu Netdisk screenshot",
+    "ferryBaiduImageAlt": "Ferry Drive Baidu Netdisk file browser",
+    "ferryTransferSettingsImage": "Ferry Drive transfer settings for concurrency and rate limits",
+    "markmapExportImage": "Markmap Plus export menu with HTML, SVG, and PNG options",
+    "macrightSettingsImage": "MacRight settings window",
+    "previousImage": "Previous image",
+    "nextImage": "Next image",
     "meegoName": "Feishu Project MCP (Go)",
     "meegoStation": "Feishu Project\nMCP (Go)",
     "meegoDescription": "A single Go MCP binary with no extra dependencies",
@@ -112,7 +128,7 @@
     "ferryImageLabel": "View the full Ferry Drive screenshot",
     "ferryImageAlt": "Ferry Drive Quark Drive file browser",
     "markmapImageLabel": "View the full Markmap Plus screenshot",
-    "markmapImageAlt": "A newly created sample document and its mind map showing nested lists",
+    "markmapImageAlt": "Weekend hiking plan and its Markmap Plus mind map in Typora",
     "toolGallery": "Open-source tool gallery",
     "toolNavigation": "Choose a tool",
     "showTool": "View {name}",
@@ -284,6 +300,117 @@
     browser.classList.add("tool-browser");
   }
 
+  /** Group multiple preview figures from one work into a manual gallery. */
+  function initializeToolGalleries() {
+    document.querySelectorAll("#tool-track > article").forEach((tool) => {
+      const figures = [...tool.querySelectorAll(":scope > .tool-preview")];
+      if (figures.length < 2) return;
+
+      const frame = document.createElement("div");
+      frame.className = "tool-gallery-frame";
+      const firstImage = figures[0].querySelector("img");
+      frame.style.aspectRatio = `${firstImage.getAttribute("width")} / ${firstImage.getAttribute("height")}`;
+      figures[0].before(frame);
+      frame.append(...figures);
+      figures.forEach((figure) => { figure.querySelector("img").loading = "eager"; });
+
+      const controls = document.createElement("div");
+      controls.className = "tool-gallery-controls";
+      const count = document.createElement("span");
+      count.setAttribute("role", "status");
+      let activeImage = 0;
+      let requestedImage;
+      let dragStart;
+      let suppressClick = false;
+
+      /** Keep the counter and keyboard focus aligned with the visible screenshot. */
+      function updateSelection(index) {
+        activeImage = index;
+        count.textContent = `${index + 1} / ${figures.length}`;
+        figures.forEach((figure, i) => {
+          figure.querySelector("a").tabIndex = i === index ? 0 : -1;
+        });
+      }
+
+      /** Buttons wrap at either end; native swipes stop at the first or last screenshot. */
+      function showImage(index) {
+        requestedImage = (index + figures.length) % figures.length;
+        frame.scrollTo({
+          left: requestedImage * frame.clientWidth,
+          behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth",
+        });
+      }
+
+      frame.addEventListener("scroll", () => {
+        if (!frame.clientWidth) return;
+        const index = Math.max(0, Math.min(figures.length - 1, Math.round(frame.scrollLeft / frame.clientWidth)));
+        if (index !== activeImage) updateSelection(index);
+      }, { passive: true });
+      frame.addEventListener("scrollend", () => { requestedImage = undefined; });
+      frame.addEventListener("wheel", () => { requestedImage = undefined; }, { passive: true });
+      frame.addEventListener("dragstart", (event) => event.preventDefault());
+      frame.addEventListener("pointerdown", (event) => {
+        suppressClick = false;
+        requestedImage = undefined;
+        if (!event.isPrimary || event.button !== 0 || event.pointerType !== "mouse") return;
+        dragStart = { id: event.pointerId, x: event.clientX, y: event.clientY, index: activeImage };
+      });
+      frame.addEventListener("pointermove", (event) => {
+        if (dragStart?.id !== event.pointerId) return;
+        const dx = event.clientX - dragStart.x;
+        const dy = event.clientY - dragStart.y;
+        if (!frame.hasPointerCapture(event.pointerId)) {
+          if (Math.abs(dx) < 10 || Math.abs(dx) <= Math.abs(dy)) return;
+          frame.setPointerCapture(event.pointerId);
+          frame.classList.add("is-dragging");
+          suppressClick = true;
+        }
+        frame.scrollLeft = dragStart.index * frame.clientWidth - dx;
+      });
+      frame.addEventListener("pointerup", (event) => {
+        if (dragStart?.id !== event.pointerId) return;
+        const start = dragStart;
+        dragStart = undefined;
+        if (!frame.hasPointerCapture(event.pointerId)) return;
+        frame.releasePointerCapture(event.pointerId);
+        frame.classList.remove("is-dragging");
+        const dx = event.clientX - start.x;
+        const step = Math.abs(dx) >= 36 ? -Math.sign(dx) : 0;
+        showImage(Math.max(0, Math.min(figures.length - 1, start.index + step)));
+      });
+      frame.addEventListener("lostpointercapture", () => {
+        dragStart = undefined;
+        frame.classList.remove("is-dragging");
+      });
+      frame.addEventListener("pointercancel", () => {
+        dragStart = undefined;
+        frame.classList.remove("is-dragging");
+      });
+      frame.addEventListener("click", (event) => {
+        if (!suppressClick || event.detail === 0) return;
+        event.preventDefault();
+        event.stopPropagation();
+        suppressClick = false;
+      }, true);
+      new ResizeObserver(() => {
+        if (!frame.clientWidth) return;
+        frame.scrollTo({ left: (requestedImage ?? activeImage) * frame.clientWidth, behavior: "instant" });
+      }).observe(frame);
+      for (const [symbol, key, step] of [["<", "previousImage", -1], [">", "nextImage", 1]]) {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "carousel-arrow";
+        button.dataset.i18nAriaLabel = key;
+        button.textContent = symbol;
+        button.addEventListener("click", () => showImage((requestedImage ?? activeImage) + step));
+        controls.append(button);
+      }
+      controls.insertBefore(count, controls.lastChild);
+      frame.after(controls);
+      updateSelection(0);
+    });
+  }
+
   /** Enlarge the original image in a native modal and restore the triggering link. */
   function initializeImagePreview() {
     const dialog = document.getElementById("image-dialog");
@@ -316,6 +443,7 @@
       toolsInView = entry.isIntersecting;
       loadToolImages();
     }, { rootMargin: "160px" }).observe(document.getElementById("tools"));
+    initializeToolGalleries();
     initializeToolSelection();
     initializeImagePreview();
     renderLanguage();

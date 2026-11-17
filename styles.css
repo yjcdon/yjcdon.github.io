@@ -496,6 +496,45 @@ h2 {
   width: min(100%, 480px);
   margin-inline: auto;
 }
+.tool-gallery-frame {
+  margin-top: 28px;
+  display: flex;
+  overflow-x: auto;
+  overflow-y: hidden;
+  max-height: min(900px, 92svh);
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  overscroll-behavior-x: contain;
+  user-select: none;
+}
+.tool-gallery-frame::-webkit-scrollbar {
+  display: none;
+}
+.tool-gallery-frame.is-dragging {
+  scroll-snap-type: none;
+  cursor: grabbing;
+}
+.tool-gallery-frame .tool-preview {
+  flex: 0 0 100%;
+  min-width: 0;
+  min-height: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+.tool-gallery-frame .tool-preview a,
+.tool-gallery-frame img {
+  height: 100%;
+}
+.tool-gallery-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 14px;
+  margin-top: 12px;
+}
 @media (max-width: 760px) {
   .tool-browser {
     grid-template-columns: minmax(0, 1fr);
@@ -609,6 +648,24 @@ h2 {
     margin-top: 2px;
   }
 }
+.carousel-arrow {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  border: 3px solid var(--line);
+  border-radius: 8px;
+  box-shadow:
+    inset 0 0 0 3px #1e2b4b,
+    0 4px 0 #101a30;
+  background: #32466f;
+  color: var(--ink);
+}
+.carousel-arrow:hover {
+  background: var(--line);
+}
 .carousel-dot:hover {
   color: var(--ink);
   background: var(--hover);
@@ -718,7 +775,7 @@ h3 {
 }
 .tool-preview img {
   width: 100%;
-  max-height: 440px;
+  max-height: min(900px, 92svh);
   object-fit: contain;
   border-radius: 8px;
 }
@@ -888,6 +945,10 @@ body:has(#image-dialog[open]) {
   }
   .section-heading {
     margin-bottom: 25px;
+  }
+  .carousel-arrow {
+    width: 44px;
+    height: 44px;
   }
   .tool-card {
     padding: 34px 22px;

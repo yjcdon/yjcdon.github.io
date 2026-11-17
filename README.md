@@ -8,6 +8,7 @@
 
 - 首屏：天空背景、偏左上的个人介绍与右侧太阳/月亮；名字保持同一行，显示任职情况、产品经理与 AI 全栈开发方向及邮箱。
 - 开源工具：桌面端左侧是工具目录，右侧展示所选工具。飞书项目 MCP 卡片提供安装、下载和资源占用对比图。Ferry Drive 标为跨平台，浏览器扩展入口使用像素风 Chrome 图标，展开后可单独查看倍速、X 和抖音扩展。Typora Markmap Plus 和蓝牙音箱静音保活也在目录中独立展示。
+- 作品预览：有多张素材时，可用轮播按钮切换，也可在图片上横向滚动、按住拖动或用手指横划。触控板和触屏使用浏览器原生横向滚动，并自动对齐到整张图片；纵向手势用于滚动页面。横滑在首尾图片处停止，左右按钮支持首尾循环。鼠标拖动后松开可切换图片，单击图片查看原图。预览区域尺寸固定，系统启用减少动态效果时按钮直接切换。Ferry Drive 展示百度网盘、夸克网盘和传输设置截图，Markmap Plus 展示 Typora 文档与导图、导出菜单截图。
 - 桌面端右侧详情按内容确定高度，页脚跟随工具区收尾。左侧目录与详情等高，超出的条目在目录内滚动，滚动条隐藏。指针在目录内滚到顶或底时，滚动停在栏内。内容较少时在卡片内垂直居中。切换工具时，如果固定顶栏挡住了工具区顶部，页面会将工具区移回可见位置。
 - 支持中英文，首次访问跟随浏览器语言，手动选择保存在本机。页面固定暗色，不再读取或写入主题偏好；首屏固定显示月亮。
 - 窄屏点击当前工具展开带图标的目录，选中项带勾，浏览器扩展可单独展开。选择后收起目录，详情和图片纵向排列。
@@ -42,9 +43,9 @@ uv run --with fonttools --with brotli scripts/subset-pixel-font.py
 - 泰拉瑞亚游戏素材来自官方 Wiki <https://terraria.wiki.gg/>，版权归 Re-Logic；逐文件页面与原图地址保存在 `assets/terraria/sources.json`。这些素材单独标注来源，不适用字体或图标的开源许可。
 - Fusion Pixel Font：<https://github.com/TakWolf/fusion-pixel-font>，SIL OFL 1.1，当前本地子集命名为 YJ Pixel Workshop。上游及组成字体许可保留在 `assets/pixel-font-licenses/`。
 - `assets/ferry-drive-preview.png`：用户提供的 Ferry Drive 夸克网盘文件管理截图。
-- `assets/connect-comparison.png`：用户提供的资源对比原图。
+- `assets/previews/connect-connected.png` 和 `assets/connect-comparison.png`：用户提供的 miniEasyConnect 已连接界面和资源占用对比。
 - `assets/macright-context-menu.jpg`：用户提供的 MacRight 右键菜单原图。
-- `assets/markmap-demo.png`：新建示例文档生成的真实导图截图。
+- `assets/markmap-demo.png` 和 `assets/previews/markmap-export-menu.png`：用户提供的 Typora 导图界面和导出菜单截图。
 - Ferry、miniEasyConnect、MacRight 图标提取自对应应用；Markmap 图标来自插件默认悬浮按钮。
 - `assets/speaker-silver.svg`：用户选定的 C 款银灰图标，采用 Tabler Icons 的 device-speaker 符号，许可见 `assets/tabler-icons-LICENSE.txt`。
 - 其他历史截图和图标保留，当前页面资源引用以 HTML 与 CSS 为准。应用许可及上游关系见各工具仓库。
