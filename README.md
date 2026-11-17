@@ -44,6 +44,8 @@ pnpm preview
 
 开发预览默认位于 http://localhost:5173，生产构建预览默认位于 http://localhost:4173。构建产物位于 `build/`，可以部署到静态站点服务。
 
+GitHub Pages 的发布来源为 GitHub Actions。推送 `main` 后，`.github/workflows/pages.yml` 执行类型检查、构建，并发布 `build/`。
+
 ## 文件与维护
 
 - `src/lib/content.ts` 集中维护工具顺序、分组、中英文文案、图标、链接与截图。新增工具只需添加一个记录。
