@@ -66,4 +66,4 @@ uv run --with fonttools --with brotli scripts/subset-pixel-font.py
 
 工具区标题旁装饰使用官方 Wiki 的透明 Diamond.png，按原图两倍尺寸（36 × 32 px）显示，来源记录于 sources.json。
 
-网页视频长按倍速展示 Chrome / Edge 插件及用户提供的倍率设置截图，安装说明链接到插件发布页；插件图标来自其 GitHub 仓库。
+网页视频长按倍速展示 Chrome / Edge 插件及用户提供的倍率设置截图，并介绍右方向键长按加速与适用网站。安装说明链接到插件发布页，插件图标来自其 GitHub 仓库。
