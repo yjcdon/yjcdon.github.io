@@ -387,70 +387,233 @@ h2 {
   font: 36px/1.35 var(--pixel);
   letter-spacing: -0.8px;
 }
+.tool-browser {
+  display: grid;
+  grid-template-columns: 144px minmax(0, 1fr);
+  align-items: start;
+  gap: 18px;
+}
 .carousel-controls {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  margin-bottom: 28px;
+  position: relative;
 }
-.carousel-arrow {
+#tool-status {
+  /* Anchor the live region so the full list cannot extend page overflow. */
+  inset-block-start: 0;
+  inset-inline-start: 0;
+}
+.carousel-dots,
+.extension-options {
   display: grid;
-  place-items: center;
-  flex-shrink: 0;
-  width: 38px;
-  height: 38px;
-  padding: 0;
-  border: 3px solid var(--line);
-  border-radius: 8px;
-  box-shadow:
-    inset 0 0 0 3px #1e2b4b,
-    0 4px 0 #101a30;
-  background: #32466f;
-  color: var(--ink);
-}
-.carousel-arrow:hover {
-  background: var(--line);
-}
-.carousel-arrow svg {
-  width: 18px;
-  height: 18px;
-  stroke: currentColor;
-  stroke-width: 1.7;
-}
-.carousel-dots {
-  display: grid;
-  grid-template-columns: repeat(7, minmax(0, 1fr));
-  gap: 12px;
-  flex: 1;
-  min-width: 0;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 8px;
 }
 .carousel-dot {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 11px;
+  gap: 5px;
+  width: 100%;
+  min-height: 64px;
   min-width: 0;
-  min-height: 144px;
-  padding: 16px 8px;
+  padding: 6px 4px;
   position: relative;
+  border: 2px solid var(--line);
+  border-radius: 5px;
+  background: #2b3e68;
+  color: #e2e9ff;
+  text-align: center;
+  font: 12px/1.3 var(--pixel);
+}
+.carousel-dot img {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+  flex: none;
+}
+.extension-summary {
+  list-style: none;
+  cursor: pointer;
+}
+.extension-summary::-webkit-details-marker {
+  display: none;
+}
+.extension-summary::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  inset-inline-start: 12px;
+  width: 5px;
+  height: 5px;
+  border-right: 1px solid currentColor;
+  border-bottom: 1px solid currentColor;
+  transform: translateY(-50%) rotate(45deg);
+}
+.extension-group[open] .extension-summary::before {
+  transform: translateY(-50%) rotate(225deg);
+}
+.extension-options {
+  margin-top: 8px;
+  padding-inline-start: 16px;
+}
+.tool-picker {
+  display: none;
+}
+.tool-track {
+  min-width: 0;
   border: 3px solid var(--line);
   border-radius: 10px;
-  background: #2b3e68;
-  box-shadow:
-    inset 0 0 0 3px #1f2d50,
-    0 4px 0 #101a30;
-  color: #e2e9ff;
-  font: 12px/1.5 var(--pixel);
-  transition:
-    background-color 0.18s,
-    color 0.18s;
+  box-shadow: 0 5px 0 #101a30;
+  background: var(--surface);
+}
+@media (width > 760px) {
+  .tool-browser > .carousel-controls {
+    /* Let the detail panel size the shared row, even with a long tool list. */
+    contain: size;
+    align-self: stretch;
+    overflow-y: auto;
+    overscroll-behavior-y: contain;
+    scrollbar-width: none;
+    padding: 6px;
+    border-radius: 5px;
+    background: #101a3066;
+  }
+  .tool-browser > .carousel-controls::-webkit-scrollbar {
+    display: none;
+  }
+  .tool-browser > .tool-track > .tool-card {
+    min-height: 360px;
+  }
+  .carousel-dot:focus-visible {
+    outline: 3px solid var(--accent);
+    outline-offset: -4px;
+  }
+}
+.tool-preview {
+  margin: 28px 0 0;
+}
+[aria-labelledby="video-speed-title"] .tool-preview {
+  width: min(100%, 480px);
+  margin-inline: auto;
+}
+@media (max-width: 760px) {
+  .tool-browser {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 14px;
+  }
+  .tool-picker[aria-expanded="false"] + .carousel-dots {
+    display: none;
+  }
+  .tool-picker {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    min-height: 48px;
+    padding: 8px 14px;
+    border: 2px solid var(--line);
+    border-radius: 8px;
+    box-shadow: 0 3px 0 #101a30;
+    background: var(--surface);
+    color: var(--ink);
+    text-align: start;
+    font: 16px/1.35 var(--pixel);
+  }
+  .tool-picker img {
+    flex: none;
+    width: 26px;
+    height: 26px;
+    object-fit: contain;
+  }
+  #tool-picker-name {
+    flex: 1;
+    overflow-wrap: anywhere;
+  }
+  .tool-picker::after {
+    content: "";
+    flex: none;
+    width: 8px;
+    height: 8px;
+    margin-inline-end: 2px;
+    border-right: 2px solid currentColor;
+    border-bottom: 2px solid currentColor;
+    transform: translateY(-2px) rotate(45deg);
+  }
+  .tool-picker[aria-expanded="true"] {
+    border-color: var(--accent);
+  }
+  .tool-picker[aria-expanded="true"]::after {
+    transform: translateY(2px) rotate(225deg);
+  }
+  .tool-picker + .carousel-dots {
+    gap: 2px;
+    max-height: min(24rem, 55svh);
+    margin-top: 8px;
+    padding: 6px;
+    overflow-y: auto;
+    border: 2px solid var(--line);
+    border-radius: 8px;
+    background: var(--surface);
+  }
+  .tool-picker + .carousel-dots .carousel-dot {
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 10px;
+    min-height: 44px;
+    padding: 6px 36px 6px 8px;
+    border: 0;
+    background: transparent;
+    text-align: start;
+    font-size: 15px;
+  }
+  .tool-picker + .carousel-dots .carousel-dot:hover {
+    background: #2b3e68;
+  }
+  .tool-picker + .carousel-dots .carousel-dot[aria-current="true"] {
+    background: var(--hover);
+    box-shadow: none;
+  }
+  .tool-picker + .carousel-dots .carousel-dot[aria-current="true"]::after {
+    top: 50%;
+    right: 14px;
+    width: 6px;
+    height: 10px;
+    border-right: 2px solid currentColor;
+    border-bottom: 2px solid currentColor;
+    background: transparent;
+    transform: translateY(-65%) rotate(45deg);
+  }
+  .tool-picker + .carousel-dots .carousel-dot:focus-visible {
+    outline-offset: -3px;
+  }
+  .tool-picker + .carousel-dots img {
+    width: 24px;
+    height: 24px;
+  }
+  .tool-picker + .carousel-dots .station-name {
+    white-space: normal;
+  }
+  .tool-picker + .carousel-dots .station-name br {
+    display: none;
+  }
+  .tool-picker + .carousel-dots .extension-summary {
+    color: var(--muted);
+    box-shadow: none;
+  }
+  .tool-picker + .carousel-dots .extension-summary::before {
+    inset-inline-start: auto;
+    inset-inline-end: 14px;
+  }
+  .tool-picker + .carousel-dots .extension-options {
+    gap: 2px;
+    margin-top: 2px;
+  }
 }
 .carousel-dot:hover {
   color: var(--ink);
   background: var(--hover);
 }
-.carousel-dot[aria-current="true"] {
+.carousel-dot:is([aria-current="true"], .contains-current) {
   color: #fff0bf;
   border-color: #f2cc70;
   background: var(--hover);
@@ -467,58 +630,25 @@ h2 {
   height: 5px;
   background: #ffe49b;
 }
-.carousel-dot img {
-  width: 48px;
-  height: 48px;
-  object-fit: contain;
-}
-.carousel-dot img[src$="markmap-icon.svg"] {
-  padding: 9px;
+.carousel-dot img[src$="markmap-icon.svg"],
+.tool-picker img[src$="markmap-icon.svg"] {
+  padding: 5px;
   border-radius: 50%;
   background: #fff;
 }
-.station-name-lines {
-  white-space: pre-line;
-}
 .station-name {
+  white-space: pre-line;
+  text-wrap: balance;
   overflow-wrap: anywhere;
-}
-.tool-track {
-  position: relative;
-  display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: 100%;
-  gap: 24px;
-  align-items: start;
-  overflow-x: auto;
-  overscroll-behavior-x: contain;
-  scroll-snap-type: x mandatory;
-  scrollbar-width: none;
-  border: 3px solid var(--line);
-  border-radius: 10px;
-  box-shadow: 0 5px 0 #101a30;
-  background: var(--surface);
-}
-.tool-track::-webkit-scrollbar {
-  display: none;
 }
 .tool-card {
   display: flex;
   flex-direction: column;
   justify-content: center;
   min-width: 0;
-  min-height: 460px;
   padding: 54px 44px;
   text-align: center;
-  scroll-snap-align: start;
   background: var(--surface);
-}
-.featured,
-.with-preview {
-  display: grid;
-  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
-  gap: 48px;
-  align-items: center;
 }
 .featured-copy {
   max-width: 560px;
@@ -582,9 +712,6 @@ h3 {
   color: var(--accent);
   font: 14px/1.5 var(--pixel);
 }
-.tool-preview {
-  margin: 0;
-}
 .tool-preview a {
   display: block;
   cursor: zoom-in;
@@ -594,33 +721,6 @@ h3 {
   max-height: 440px;
   object-fit: contain;
   border-radius: 8px;
-}
-.extension-list {
-  margin: 16px 0 0;
-  padding: 0;
-  list-style: none;
-  text-align: left;
-}
-.extension-list li {
-  padding: 12px 0;
-  border-bottom: 1px solid var(--line);
-}
-.extension-list li:last-child {
-  border-bottom: 0;
-}
-.extension-list h4 {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin: 0;
-  font: 16px/1.5 var(--pixel);
-}
-.extension-list h4 img {
-  flex: none;
-  object-fit: contain;
-}
-.extension-list .tool-description {
-  margin: 5px 0 0;
 }
 .world-footer {
   padding: 28px 18px 38px;
@@ -683,15 +783,6 @@ body:has(#image-dialog[open]) {
   nav {
     gap: 18px;
   }
-  .featured,
-  .with-preview {
-    grid-template-columns: 1fr;
-    gap: 34px;
-  }
-  .tool-preview {
-    width: min(100%, 620px);
-    margin-inline: auto;
-  }
   .tool-card {
     padding: 42px 30px;
   }
@@ -702,13 +793,6 @@ body:has(#image-dialog[open]) {
   .sky-cloud-low {
     top: 82%;
     right: 27%;
-  }
-  .carousel-controls {
-    gap: 12px;
-  }
-  .carousel-dot {
-    font-size: 11px;
-    padding-inline: 4px;
   }
 }
 @media (max-width: 620px) {
@@ -805,40 +889,8 @@ body:has(#image-dialog[open]) {
   .section-heading {
     margin-bottom: 25px;
   }
-  .carousel-controls {
-    gap: 6px;
-    margin-bottom: 20px;
-  }
-  .carousel-arrow {
-    width: 30px;
-    height: 34px;
-  }
-  .carousel-dots {
-    display: flex;
-    justify-content: flex-start;
-    overflow-x: auto;
-    scrollbar-width: none;
-    scroll-snap-type: x proximity;
-    gap: 3px;
-  }
-  .carousel-dot {
-    flex: 0 0 108px;
-    min-height: 105px;
-    padding: 12px 6px;
-    scroll-snap-align: center;
-    border-radius: 12px;
-  }
-  .carousel-dot img {
-    width: 42px;
-    height: 42px;
-  }
-  .tool-track {
-    border-radius: 10px;
-    gap: 18px;
-  }
   .tool-card {
     padding: 34px 22px;
-    min-height: 400px;
   }
   h3 {
     font-size: 27px;
@@ -848,9 +900,6 @@ body:has(#image-dialog[open]) {
   }
   .tool-description {
     font-size: 14px;
-  }
-  .tool-preview img {
-    max-height: 400px;
   }
   .world-footer {
     font-size: 11px;

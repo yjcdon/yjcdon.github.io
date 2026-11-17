@@ -3,6 +3,7 @@
   const messages = {
   "zh": {
     "meegoName": "飞书项目 MCP（Go 版）",
+    "meegoStation": "飞书项目 MCP\n（Go 版）",
     "meegoDescription": "Go 单文件 MCP 进程，无需额外依赖",
     "meegoMemory": "内存占用比原版 Node.js 进程减少约 83%",
     "meegoGuide": "安装教程",
@@ -50,8 +51,6 @@
     "markmapImageAlt": "新建示例文档及其思维导图，展示多级列表的结构",
     "toolGallery": "开源工具展示",
     "toolNavigation": "切换工具",
-    "previousTool": "上一个工具",
-    "nextTool": "下一个工具",
     "showTool": "查看 {name}",
     "toolStatus": "正在展示：{name}，第 {current} 个，共 {total} 个。",
     "connectImageLabel": "查看 miniEasyConnect 资源对比原图",
@@ -68,6 +67,7 @@
   },
   "en": {
     "meegoName": "Feishu Project MCP (Go)",
+    "meegoStation": "Feishu Project\nMCP (Go)",
     "meegoDescription": "A single Go MCP binary with no extra dependencies",
     "meegoMemory": "Uses about 83% less memory than the original Node.js process",
     "meegoGuide": "Installation guide",
@@ -115,8 +115,6 @@
     "markmapImageAlt": "A newly created sample document and its mind map showing nested lists",
     "toolGallery": "Open-source tool gallery",
     "toolNavigation": "Choose a tool",
-    "previousTool": "Previous tool",
-    "nextTool": "Next tool",
     "showTool": "View {name}",
     "toolStatus": "Showing {name}, tool {current} of {total}.",
     "connectImageLabel": "View the original miniEasyConnect resource comparison",
@@ -196,87 +194,94 @@
     languageToggle.setAttribute("aria-label", translate("switchLanguage"));
     languageToggle.title = translate("switchLanguage");
     document.getElementById("language-label").textContent = language === "zh" ? "EN" : "中";
-    renderCarouselControls();
+    renderToolSelection();
   }
 
   /** Load the selected tool's original assets only as the workshop approaches view. */
   function loadToolImages() {
     if (!toolsInView) return;
     const slide = document.querySelectorAll("#tool-track > article")[activeTool];
-    const images = [...document.querySelectorAll(".carousel-dot img[data-src]"), ...slide.querySelectorAll("img[data-src]")];
+    const images = [...document.querySelectorAll(".carousel-dot img[data-src]"), ...slide.querySelectorAll(".tool-preview img[data-src]")];
     images.forEach((image) => {
       image.src = image.dataset.src;
       image.removeAttribute("data-src");
     });
+    const pickerIcon = document.querySelector("#tool-picker img");
+    pickerIcon.src = document.querySelectorAll("button.carousel-dot img")[activeTool].src;
+    pickerIcon.hidden = false;
   }
 
   /** Keep tool navigation, translated announcements and offscreen focus in sync. */
-  function renderCarouselControls() {
-    loadToolImages();
+  function renderToolSelection() {
     const slides = [...document.querySelectorAll("#tool-track > article")];
-    const dots = [...document.querySelectorAll(".carousel-dot")];
+    const dots = [...document.querySelectorAll("button.carousel-dot")];
     slides.forEach((slide, index) => {
-      slide.inert = index !== activeTool;
-      slide.setAttribute("aria-hidden", String(index !== activeTool));
+      slide.hidden = index !== activeTool;
       const name = slide.querySelector("h3").textContent;
-      const label = dots[index].querySelector(".station-name");
-      label.textContent = label.classList.contains("station-name-lines")
-        ? name.replace(/\s*(?=[（(])/, "\n")
-        : name;
       dots[index].setAttribute("aria-label", translate("showTool").replace("{name}", name));
+      dots[index].title = name;
       dots[index].setAttribute("aria-current", String(index === activeTool));
     });
+    const activeName = slides[activeTool].querySelector("h3").textContent;
+    document.getElementById("tool-picker-name").textContent = activeName;
+    document.querySelector(".extension-summary").classList.toggle("contains-current", Boolean(dots[activeTool].closest(".extension-group")));
+    loadToolImages();
     document.getElementById("tool-status").textContent = translate("toolStatus")
-      .replace("{name}", slides[activeTool].querySelector("h3").textContent)
+      .replace("{name}", activeName)
       .replace("{current}", String(activeTool + 1))
       .replace("{total}", String(slides.length));
   }
 
-  /** Navigate tools by name, arrows or touch without interrupting reading. */
-  function initializeCarousel() {
-    const track = document.getElementById("tool-track");
-    const slides = [...track.querySelectorAll(":scope > article")];
-    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-    let cardTransition;
+  /** Keep the desktop list and mobile selector on the same work. */
+  function initializeToolSelection() {
+    const browser = document.getElementById("tool-carousel");
+    const header = document.querySelector(".header-shell");
+    const controls = document.querySelector(".carousel-controls");
+    const picker = document.getElementById("tool-picker");
+    const list = document.getElementById("tool-list");
+    const extensionGroup = document.querySelector(".extension-group");
+    const buttons = document.querySelectorAll("button.carousel-dot");
+    const narrowScreen = window.matchMedia("(max-width: 760px)");
 
-    /** Switch directly to the chosen card, then fade it in without traversing other tools. */
-    function showTool(index) {
-      const nextTool = ((index % slides.length) + slides.length) % slides.length;
-      if (nextTool === activeTool) return;
-      if (cardTransition) cardTransition.finish();
-      activeTool = nextTool;
-      track.scrollTo({ left: slides[activeTool].offsetLeft, behavior: "instant" });
-      renderCarouselControls();
-      if (!reducedMotion.matches) {
-        cardTransition = slides[activeTool].animate(
-          [{ opacity: 0.45 }, { opacity: 1 }],
-          { duration: 160, easing: "ease-out" }
-        );
+    picker.addEventListener("click", () => {
+      const expanded = picker.getAttribute("aria-expanded") === "true";
+      picker.setAttribute("aria-expanded", String(!expanded));
+      if (!expanded) {
+        const activeButton = buttons[activeTool];
+        if (extensionGroup.contains(activeButton)) extensionGroup.open = true;
+        const item = activeButton.getBoundingClientRect();
+        const viewport = list.getBoundingClientRect();
+        if (item.top < viewport.top + 6) list.scrollTop += item.top - viewport.top - 6;
+        else if (item.bottom > viewport.bottom - 6) list.scrollTop += item.bottom - viewport.bottom + 6;
       }
-    }
-    document.getElementById("tool-prev").addEventListener("click", () => showTool(activeTool - 1));
-    document.getElementById("tool-next").addEventListener("click", () => showTool(activeTool + 1));
-    document.querySelectorAll(".carousel-dot").forEach((dot, index) => {
-      dot.addEventListener("click", () => showTool(index));
     });
-    track.addEventListener("keydown", (event) => {
-      if (event.target !== track) return;
-      const targets = { ArrowLeft: activeTool - 1, ArrowRight: activeTool + 1, Home: 0, End: slides.length - 1 };
-      if (!(event.key in targets)) return;
+    controls.addEventListener("keydown", (event) => {
+      if (event.key !== "Escape" || !narrowScreen.matches || picker.getAttribute("aria-expanded") !== "true") return;
       event.preventDefault();
-      showTool(targets[event.key]);
+      picker.setAttribute("aria-expanded", "false");
+      picker.focus();
     });
-    const observer = new IntersectionObserver((entries) => {
-      const visible = entries.find((entry) => entry.isIntersecting && entry.intersectionRatio >= 0.6);
-      if (!visible) return;
-      activeTool = slides.indexOf(visible.target);
-      renderCarouselControls();
-    }, { root: track, threshold: 0.6 });
-    slides.forEach((slide) => observer.observe(slide));
-    new ResizeObserver(() => {
-      track.scrollTo({ left: slides[activeTool].offsetLeft, behavior: "instant" });
-    }).observe(track);
-    document.querySelector(".carousel-controls").hidden = false;
+
+    buttons.forEach((button, index) => {
+      button.addEventListener("click", () => {
+        if (extensionGroup.contains(button)) extensionGroup.open = true;
+        activeTool = index;
+        renderToolSelection();
+        if (narrowScreen.matches) {
+          picker.setAttribute("aria-expanded", "false");
+          picker.focus({ preventScroll: true });
+        } else {
+          // Keep the selected entry visible when a shorter detail shrinks the sidebar.
+          const overflow = button.getBoundingClientRect().bottom - controls.getBoundingClientRect().bottom;
+          if (overflow > 0) controls.scrollTop += overflow;
+        }
+        if (browser.getBoundingClientRect().top < header.getBoundingClientRect().bottom) {
+          browser.scrollIntoView({ block: "start", behavior: "instant" });
+        }
+      });
+    });
+    controls.hidden = false;
+    browser.classList.add("tool-browser");
   }
 
   /** Enlarge the original image in a native modal and restore the triggering link. */
@@ -311,7 +316,7 @@
       toolsInView = entry.isIntersecting;
       loadToolImages();
     }, { rootMargin: "160px" }).observe(document.getElementById("tools"));
-    initializeCarousel();
+    initializeToolSelection();
     initializeImagePreview();
     renderLanguage();
     document.querySelector(".preferences").hidden = false;
