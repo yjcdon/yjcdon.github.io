@@ -82,4 +82,4 @@ GitHub Pages 的发布来源为 GitHub Actions。推送 `main` 后，`.github/wo
 
 工具区标题旁装饰使用官方 Wiki 的透明 Diamond.png，按原图两倍尺寸（36 × 32 px）显示，来源记录于 sources.json。
 
-网页视频长按倍速展示 Chrome / Edge 插件及用户提供的倍率设置截图，并介绍右方向键长按加速与适用网站。安装说明链接到插件发布页，插件图标来自其 GitHub 仓库。
+网页视频长按倍速展示 Chrome / Edge 插件及用户提供的倍率设置截图，并介绍右方向键长按加速与适用网站。插件图标来自其 GitHub 仓库。浏览器扩展统一使用「安装扩展」按钮，网页视频长按倍速和 Make X Great Again 的按钮打开 Chrome 网上应用店。
