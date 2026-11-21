@@ -430,7 +430,7 @@ export const tools: Tool[] = [
     ],
     links: [
       {
-        href: "https://github.com/yjcdon/web-video-speed-extension/releases/latest",
+        href: "https://chromewebstore.google.com/detail/%E8%A7%86%E9%A2%91%E9%95%BF%E6%8C%89%E5%8A%A0%E9%80%9F%E5%80%8D%E7%8E%87/eocijgabbohbmdlipiimocfhhlapmjhd",
         label: { zh: "下载扩展", en: "Download extension" },
         primary: true
       },
@@ -509,7 +509,7 @@ export const tools: Tool[] = [
     ],
     links: [
       {
-        href: "https://github.com/yjcdon/make-x-great-again/releases/latest",
+        href: "https://chromewebstore.google.com/detail/make-x-great-again/hhnjogcifjdjdpjkhfkbhiechbhecpdl",
         label: { zh: "下载扩展", en: "Download extension" },
         primary: true
       },
